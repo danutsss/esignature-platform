@@ -1,0 +1,39 @@
+{
+    "version": "1",
+    "information": {
+        "name": "esignature-platform",
+        "displayName": "eSignature Platform",
+        "description": "With the help of this plugin, each client will be able to read and sign a digital contract.",
+        "url": "https://github.com/matei1337/esignature-platform",
+        "version": "1.0.0",
+        "ucrmVersionCompliancy": {
+            "min": "2.14.0",
+            "max": null
+        },
+        "unmsVersionCompliancy": {
+            "min": "1.0.0-alpha.1",
+            "max": null
+        },
+        "author": "Matei Nicolae - Daniel (07INTERNET)"
+    },
+    "menu": [
+        {
+            "key": "Contract",
+            "label": "Citeste contract",
+            "type": "client",
+            "target": "iframe",
+            "parameters": {
+                "hook": "read"
+            }
+        },
+        {
+            "key": "Contract",
+            "label": "Semneaza contract",
+            "type": "client",
+            "target": "iframe",
+            "parameters": {
+                "hook": "sign"
+            }
+        }
+    ]
+}

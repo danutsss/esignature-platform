@@ -1,0 +1,23 @@
+{
+    "name": "matei1337/esignature-platform",
+    "description": "With the help of this plugin, each client will be able to sign a digital contract.",
+    "authors": [
+        {
+            "name": "Matei Nicolae - Daniel (07INTERNET)",
+            "email": "matei1337@icloud.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": [
+                "classes/"
+            ]
+        }
+    },
+    "require": {
+        "php": ">=7.1",
+        "ubnt/ucrm-plugin-sdk": "~0.5",
+        "dompdf/dompdf": "^1.0",
+        "mobiledetect/mobiledetectlib": "^2.8"
+    }
+}
