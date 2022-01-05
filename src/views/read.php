@@ -326,9 +326,9 @@ $HTML = '
 
                 <td>
                     <p>
-                        <strong>Serie C.I.:&nbsp;</strong>'.$client['attributes'][2]['value'].'
-                        <strong>Numar C.I.:&nbsp;</strong>'.$client['attributes'][3]['value'].' <br>
-                        <strong>Cod Numeric Personal:&nbsp;</strong>'.$client['attributes'][4]['value'].' <br>
+                        <strong>Serie C.I.:&nbsp;</strong>'.$client['attributes'][1]['value'].'
+                        <strong>Numar C.I.:&nbsp;</strong>'.$client['attributes'][2]['value'].' <br>
+                        <strong>Cod Numeric Personal:&nbsp;</strong>'.$client['attributes'][3]['value'].' <br>
                         <strong>Cod fiscal:&nbsp;</strong>'.$client['companyTaxId'].' <br>
                         <strong>Nr. reg. comert:&nbsp;</strong>'.$client['companyRegistrationNumber'].'
                     </p>
@@ -336,8 +336,8 @@ $HTML = '
 
                 <td>
                     <p>
-                        <strong>Emis de:&nbsp;</strong>'.$client['attributes'][5]['value'].'
-                        <strong>la data de:&nbsp;</strong>'.$client['attributes'][6]['value'].'
+                        <strong>Emis de:&nbsp;</strong>'.$client['attributes'][4]['value'].'
+                        <strong>la data de:&nbsp;</strong>'.$client['attributes'][5]['value'].'
                     </p>
                 </td>
 
@@ -365,7 +365,7 @@ $HTML = '
                     <p>
                         <strong>Telefon:&nbsp;</strong>'.$contact['phone'].' <br>
                         <strong>Username:&nbsp;</strong>'.$client['attributes'][0]['value'].' <br>
-                        <strong>Parola:&nbsp;</strong>'.$client['attributes'][1]['value'].'
+                        <strong>Parola:&nbsp;</strong>'.$client['attributes'][20]['value'].'
                     </p>
                 </td>
 
@@ -1110,6 +1110,28 @@ $HTML = '
                     </td>
 
                     <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][7]['value'].'</p>
+                    </td>
+
+                    <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][10]['value'].'</p>
+                    </td>
+
+                    <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][13]['value'].'</p>
+                    </td>
+
+                    <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][16]['value'].'</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>2</p>
+                    </td>
+
+                    <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                         <p>'.$client['attributes'][8]['value'].'</p>
                     </td>
 
@@ -1128,7 +1150,7 @@ $HTML = '
 
                 <tr>
                     <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>2</p>
+                        <p>3</p>
                     </td>
 
                     <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
@@ -1147,33 +1169,11 @@ $HTML = '
                         <p>'.$client['attributes'][18]['value'].'</p>
                     </td>
                 </tr>
-
-                <tr>
-                    <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>3</p>
-                    </td>
-
-                    <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][10]['value'].'</p>
-                    </td>
-
-                    <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][13]['value'].'</p>
-                    </td>
-
-                    <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][16]['value'].'</p>
-                    </td>
-
-                    <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][19]['value'].'</p>
-                    </td>
-                </tr>
             </tbody>
         </table>
 
         <p>
-            In perfecta stare de functionare d-lui (d-nei)&nbsp;<strong>'.$fullName.'</strong>, reprezentant al firmei&nbsp;<strong>'.$client['organizationName'].'</strong>, cu locatia in&nbsp;<strong>'.$client['city'] . ', '. $client['street1'] . ', '. $client['street2'].'</strong>, sector / judet&nbsp;<strong>Constanta</strong>, legitimat cu C.I.&nbsp;<strong>'.$client['attributes'][2]['value'].''.$client['attributes'][3]['value'].', C.N.P.: '.$client['attributes'][4]['value'].'</strong>, MAC ADDRESS: '.$client['attributes'][7]['value'].'.
+            In perfecta stare de functionare d-lui (d-nei)&nbsp;<strong>'.$fullName.'</strong>, reprezentant al firmei&nbsp;<strong>'.$client['organizationName'].'</strong>, cu locatia in&nbsp;<strong>'.$client['city'] . ', '. $client['street1'] . ', '. $client['street2'].'</strong>, sector / judet&nbsp;<strong>Constanta</strong>, legitimat cu C.I.&nbsp;<strong>'.$client['attributes'][1]['value'].''.$client['attributes'][2]['value'].', C.N.P.: '.$client['attributes'][3]['value'].'</strong>, MAC ADDRESS: '.$client['attributes'][6]['value'].'.
         </p>
 
         <p>
@@ -1202,6 +1202,20 @@ $HTML = '
                     </td>
 
                     <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][7]['value'].'</p>
+                    </td>
+
+                    <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][13]['value'].'</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>2</p>
+                    </td>
+
+                    <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                         <p>'.$client['attributes'][8]['value'].'</p>
                     </td>
 
@@ -1212,7 +1226,7 @@ $HTML = '
 
                 <tr>
                     <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>2</p>
+                        <p>3</p>
                     </td>
 
                     <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
@@ -1221,20 +1235,6 @@ $HTML = '
 
                     <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                         <p>'.$client['attributes'][15]['value'].'</p>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>3</p>
-                    </td>
-
-                    <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][10]['value'].'</p>
-                    </td>
-
-                    <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][16]['value'].'</p>
                     </td>
                 </tr>
             </tbody>
