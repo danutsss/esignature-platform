@@ -475,7 +475,7 @@ if(isset($_POST['signOutput'])) {
                 <tr>
                     <td colspan = "2">
                         <p>
-                            <strong>X ANEXA A&nbsp;</strong>– ABONAMENTE, PROMOTII si DISCOUNTURI
+                            <strong>X ANEXA A&nbsp;</strong>- ABONAMENTE, PROMOTII si DISCOUNTURI
                         </p>
                     </td>
                 </tr>
@@ -483,7 +483,7 @@ if(isset($_POST['signOutput'])) {
                 <tr>
                     <td colspan = "2">
                         <p>
-                            <strong>X ANEXA A.1&nbsp;</strong>– CONDITII GENERALE
+                            <strong>X ANEXA A.1&nbsp;</strong>- CONDITII GENERALE
                         </p>
                     </td>
                 </tr>
@@ -491,7 +491,7 @@ if(isset($_POST['signOutput'])) {
                 <tr>
                     <td colspan = "2">
                         <p>
-                            <strong>X ANEXA B.1, B.2&nbsp;</strong>– CONDITII TEHNICE SI COMERCIALE SPECIFICE SERVICIILOR DE INTERNET / TELEVIZIUNE
+                            <strong>X ANEXA B.1, B.2&nbsp;</strong>- CONDITII TEHNICE SI COMERCIALE SPECIFICE SERVICIILOR DE INTERNET / TELEVIZIUNE
                         </p>
                     </td>
                 </tr>
@@ -499,7 +499,7 @@ if(isset($_POST['signOutput'])) {
                 <tr>
                     <td colspan = "2">
                         <p>
-                            <strong>X ANEXA C.1&nbsp;</strong>– PROCES VERBAL DE ACCEPTANTA SI PUNERE IN FUNCTIUNE
+                            <strong>X ANEXA C.1&nbsp;</strong>- PROCES VERBAL DE ACCEPTANTA SI PUNERE IN FUNCTIUNE
                         </p>
                     </td>
                 </tr>
@@ -507,7 +507,7 @@ if(isset($_POST['signOutput'])) {
                 <tr>
                     <td colspan = "2">
                         <p>
-                            <strong>X ANEXA C.2&nbsp;</strong>– PROCES VERBAL DE PREDARE / PRIMIRE CUSTODIE ECHIPAMENTE
+                            <strong>X ANEXA C.2&nbsp;</strong>- PROCES VERBAL DE PREDARE / PRIMIRE CUSTODIE ECHIPAMENTE
                         </p>
                     </td>
                 </tr>
@@ -515,14 +515,14 @@ if(isset($_POST['signOutput'])) {
                 <tr>
                     <td colspan = "2">
                         <p>
-                            <strong>X ANEXA C.3&nbsp;</strong>– INFORMARE CU PRIVINTA LA PRELUCRAREA DATELOR DUMNEAVOASTRA CU CARACTER PERSONAL (DENUMITA IN CONTINUARE "INFORMAREA")
+                            <strong>X ANEXA C.3&nbsp;</strong>- INFORMARE CU PRIVINTA LA PRELUCRAREA DATELOR DUMNEAVOASTRA CU CARACTER PERSONAL (DENUMITA IN CONTINUARE "INFORMAREA")
                         </p>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
-            <h2>CONDITII GENERALE DE FURNIZARE A SERVICIILOR URBAN ("CONDITII GENERALE") – ANEXA A.1</h2>
+            <h2>CONDITII GENERALE DE FURNIZARE A SERVICIILOR URBAN ("CONDITII GENERALE") - ANEXA A.1</h2>
             <h3>1. Definitii: </h3>
             <p>
                 in cazul in care legea nu prevede altfel, termenii folositi vor avea urmatoarele definitii:
@@ -604,7 +604,7 @@ if(isset($_POST['signOutput'])) {
                 trei servicii, se va considera ca acestuia ii este furnizat un pachet de servicii &nbsp;<strong>("Pachet de Servicii")</strong>;
                 <br>
                 (v)&nbsp;<strong>Serviciul "Relatii cu Clientii":&nbsp;</strong>serviciul telefonic oferit de URBAN la numarul
-                de telefon: 0241 700 000 intre orele 08:00 – 20:00 si 07INTERNET NON-STOP sau online prin e-mail:
+                de telefon: 0241 700 000 intre orele 08:00 - 20:00 si 07INTERNET NON-STOP sau online prin e-mail:
                 client@07internet.ro, are rolul de a prelua si solutiona cererile privind furnizarea serviciului;
             </p>
         
@@ -866,7 +866,7 @@ if(isset($_POST['signOutput'])) {
             <p>
                 11.1. Baza legala a prelucrarilor
                 <br>
-                In vederea executarii prezentului contract, a obligatiilor legale care revin 07INTERNET si a exercitari intereselor legitime ale acestuia, 07INTERNET va prelucra datele cu caracter personal ale clientului in conformitate cu aspectele detaliate in &nbsp;<strong>ANEXA C3 – Informare cu privire la prelucrarea datelor dumneavoastra cu caracter personal (denumita in continuare&nbsp;<strong>"Informarea"</strong>)</strong>, parte integranta a prezentului contract. Datele clientului vor fi prelucrate pe perioadele mentionate in &nbsp;<strong>"Informare".</strong>
+                In vederea executarii prezentului contract, a obligatiilor legale care revin 07INTERNET si a exercitari intereselor legitime ale acestuia, 07INTERNET va prelucra datele cu caracter personal ale clientului in conformitate cu aspectele detaliate in &nbsp;<strong>ANEXA C3 - Informare cu privire la prelucrarea datelor dumneavoastra cu caracter personal (denumita in continuare&nbsp;<strong>"Informarea"</strong>)</strong>, parte integranta a prezentului contract. Datele clientului vor fi prelucrate pe perioadele mentionate in &nbsp;<strong>"Informare".</strong>
                 <br>
                 11.2. Drepturile clientului
                 <br>
@@ -980,11 +980,11 @@ if(isset($_POST['signOutput'])) {
                 17.3. Clientul este de acord ca reclamatiile formulate sa fie inregistrate. Fiecare reclamatie va fi preluata, fie direct de la client, fie prin fax, impreuna cu datele de identificare si de contact ale acestuia sau ale reprezentantului acestuia. Reclamatia va fi inregistrata in baza de date pentru deranjamente, va primi un numar unic si va fi imediat transmisa spre verificare si solutionare a serviciului responsabil sa rezolve tipul reclamatiei respective. Imediat ce problema a fost identificate si diagnosticata, clientul va fi informat cu privire la perioada maxima in care va avea loc remedierea defectiunii reclamate. Odata cu solutionarea reclamatiei, reprezentantul URBAN care a primit si inregistrat reclamatia, va inregistra in baza de date modul de solutionare a reclamatiei / data solutionarii sau stadiul acesteia. Intocmit in doua exemplare, impreuna cu anexele, cate unul pentru fiecare parte, declara ca se afla in posesia unui exempler complet, inclusiv anexe si orice alte documente in legatura cu contractul.
             </p>
 
-            <h1>CONDITII GENERALE DE FURNIZARE A SERVICIILOR URBAN ("CONDITII GENERALE") – ANEXA A.1</h1>
+            <h1>CONDITII GENERALE DE FURNIZARE A SERVICIILOR URBAN ("CONDITII GENERALE") - ANEXA A.1</h1>
             <h3 style = "text-align: center;">LA CONTRACTUL NR.:&nbsp;'.$clientId.'</h3>
             <h3 style = "text-align: center;">PREVEDERI SPECIFICE SERVICIULUI DE INTERNET SI TELEVIZIUNE</h3>
 
-            <h3>1. Definitii – in cazul in care legea nu prevede altfel, termenii folositi vor avea urmatoarele defintii: </h3>
+            <h3>1. Definitii - in cazul in care legea nu prevede altfel, termenii folositi vor avea urmatoarele defintii: </h3>
             <p>
                 (1) &nbsp;<strong>Adresa IP:&nbsp;</strong>identificator unic pentru un calculator personal sau pentru un echipament intr-o retea TCP / IP;
                 <br>
@@ -1012,11 +1012,11 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 3.3. Disponibilitatea lunara efectiva a serviciului se calculeaza procentual, si reprezinta suma timpului de disponibilitate a serviciului raportata la timpul total lunar (720 de ore).
                 <br>
-                3.4. Tarifele lunare aferente serviciului se diminueaza procentual din valoarea facturii, in functie de disponibilitate lunara a serviciului, daca defectiunile anuntate nu sunt imputabile clientului. Daca intreruperea serviciului se datoreaza culpei furnizorului si aceasta intrerupere depaseste termenul prevazult la art. 3.5, tarifele lunare aferente serviciului se diminueaza proportional cu numarul de zile de neutilizare a acestuia. Suma dedusa va fi scazuta din valoarea facturii pentru luna urmatoare. Reducerea se va aplica procentual din valoarea abonamentului, astfel: disponibilitate lunara 95% sau mai mult – procent discount 0%; disponibilitate lunara 94,99% - 90% – procent discount 5%; disponibilitate lunara 89,99% - 85% – procent discount 10%; disponibilitate lunara 84,99% - 80% – procent discount 15%; disponibilitate lunara 79,99% - 75% – procent discount 20%.
+                3.4. Tarifele lunare aferente serviciului se diminueaza procentual din valoarea facturii, in functie de disponibilitate lunara a serviciului, daca defectiunile anuntate nu sunt imputabile clientului. Daca intreruperea serviciului se datoreaza culpei furnizorului si aceasta intrerupere depaseste termenul prevazult la art. 3.5, tarifele lunare aferente serviciului se diminueaza proportional cu numarul de zile de neutilizare a acestuia. Suma dedusa va fi scazuta din valoarea facturii pentru luna urmatoare. Reducerea se va aplica procentual din valoarea abonamentului, astfel: disponibilitate lunara 95% sau mai mult - procent discount 0%; disponibilitate lunara 94,99% - 90% - procent discount 5%; disponibilitate lunara 89,99% - 85% - procent discount 10%; disponibilitate lunara 84,99% - 80% - procent discount 15%; disponibilitate lunara 79,99% - 75% - procent discount 20%.
                 <br>
                 3.5. Nu se considera intrerupere neanuntata:
                 <br>
-                <strong>a)&nbsp;</strong>intreruperea furnizarii in totalitate sau in parte a serviciului in vederea efectuarii de lucrari de intretinere sau dezvoltare a retelei, clientul fiind instiintat cu privire la o astfel de intrerupere cu minim 24 (douazeci si patru) de ore inainte, cu precizarea perioadei de intrerupere, care nu poate depasi 60 (saizeci) de ore pe saptamana. Furnizorul va urmari ca aceste interventii sa aiba loc in intervalul orar 8:00 – 16:00;
+                <strong>a)&nbsp;</strong>intreruperea furnizarii in totalitate sau in parte a serviciului in vederea efectuarii de lucrari de intretinere sau dezvoltare a retelei, clientul fiind instiintat cu privire la o astfel de intrerupere cu minim 24 (douazeci si patru) de ore inainte, cu precizarea perioadei de intrerupere, care nu poate depasi 60 (saizeci) de ore pe saptamana. Furnizorul va urmari ca aceste interventii sa aiba loc in intervalul orar 8:00 - 16:00;
                 <br>
                 <strong>b)&nbsp;</strong>intreruperea datorata culpei clientului sau a unor terti pentru care furnizorul nu este raspunzator, ori datorita fortei majore.
                 <br>
@@ -1040,11 +1040,11 @@ if(isset($_POST['signOutput'])) {
             <p>
                 5.1. In plus, fata de drepturile si obligatiile mentionate in &nbsp;<strong>Conditiile Generale de Furnizare a Serviciilor URBAN</strong>, clientul se obliga:
                 <br>
-                – sa stabileasca si sa pregateasca spatiul interior si / sau exterior pentru instalarea echipamentelor furnizorului, intr-o zona care sa asigure integritatea si siguranta acestora, in urma recomandarilor acestuia, asigurand astfel securitatea accesului la serviciile furnizorului. Clientul va informa deindata furnizorul despre orice actiune de care are cunostinta care ar putea reprezenta un atentat la acestea;
+                - sa stabileasca si sa pregateasca spatiul interior si / sau exterior pentru instalarea echipamentelor furnizorului, intr-o zona care sa asigure integritatea si siguranta acestora, in urma recomandarilor acestuia, asigurand astfel securitatea accesului la serviciile furnizorului. Clientul va informa deindata furnizorul despre orice actiune de care are cunostinta care ar putea reprezenta un atentat la acestea;
                 <br>
-                – sa asigure procurarea, instalarea, configurarea si intretinerea propriilor sale echipamente de interconectare cu echipamentele furnizorului. Pentru asigurarea integritatii echipamentelor furnizorului, clientul este singurul si direct raspunzator pentru eventuala distrugere totala sau partiala a acestor echipamente, daca aceasta s-a intamplat din culpa sa, a presupusilor sai sau a persoanelor aflate in subordinea sa sau actionand la comanda / instructiunile / cererea acestuia. In nici o situatie, clientul nu aredrept de retentie asupra echipamentelor furnizorului.
+                - sa asigure procurarea, instalarea, configurarea si intretinerea propriilor sale echipamente de interconectare cu echipamentele furnizorului. Pentru asigurarea integritatii echipamentelor furnizorului, clientul este singurul si direct raspunzator pentru eventuala distrugere totala sau partiala a acestor echipamente, daca aceasta s-a intamplat din culpa sa, a presupusilor sai sau a persoanelor aflate in subordinea sa sau actionand la comanda / instructiunile / cererea acestuia. In nici o situatie, clientul nu aredrept de retentie asupra echipamentelor furnizorului.
                 <br>
-                – sa nu utilizeze si sa ia toate masurile necesare pentru a nu permite utilizare serviciului furnizat in scopuri ilegale conform legislatiei romane in vigoare sau in scopul prejudicierii, in orice mod, a unor terte persoane, fizice sau juridice, din tara sau din strainatate, prin diferite modalitati si in special prin expedierea de mesaje cu intentia de a hartui, ameninta, insulta, calomnia sau de a deranja in orice alt mod destinatarul, inclusiv prin atac la morala, prin distribuirea de materiale ce incalca drepturile de proprietate intelectuala sau dreptul la intimitate ori alte drepturi ale unor terte persoane, rin orice actiuni care aduc prejudicii altor utilizatori.
+                - sa nu utilizeze si sa ia toate masurile necesare pentru a nu permite utilizare serviciului furnizat in scopuri ilegale conform legislatiei romane in vigoare sau in scopul prejudicierii, in orice mod, a unor terte persoane, fizice sau juridice, din tara sau din strainatate, prin diferite modalitati si in special prin expedierea de mesaje cu intentia de a hartui, ameninta, insulta, calomnia sau de a deranja in orice alt mod destinatarul, inclusiv prin atac la morala, prin distribuirea de materiale ce incalca drepturile de proprietate intelectuala sau dreptul la intimitate ori alte drepturi ale unor terte persoane, rin orice actiuni care aduc prejudicii altor utilizatori.
                 <br>
                 Raspunderea furnizorului nu va fi angajata in cazul infiltrarii unui tert in sistemul informatic al clientului, acesta ramanand singurul responsabil de protectia propriului sau sistem informatic.
             </p>
@@ -1081,12 +1081,12 @@ if(isset($_POST['signOutput'])) {
 
             <br>
 
-            <h1>ANEXA C.1 – PROCES VERBAL DE ACCEPTANTA SI PUNERE IN FUNCTIUNE</h1>
-            <h1>ANEXA C.2 – PROCES VERBAL DE PREDARE - PRIMIRE CUSTODIE ECHIPAMENTE</h1>
+            <h1>ANEXA C.1 - PROCES VERBAL DE ACCEPTANTA SI PUNERE IN FUNCTIUNE</h1>
+            <h1>ANEXA C.2 - PROCES VERBAL DE PREDARE - PRIMIRE CUSTODIE ECHIPAMENTE</h1>
             <h5 class = "header__phone" style = "font-weight: bold;">CTR NR.:&nbsp;'.$clientId.'</h5>
 
             <p>
-                ART. 1. – URBAN NETWORK SOLUTIONS S.R.L,<strong> 
+                ART. 1. - URBAN NETWORK SOLUTIONS S.R.L,<strong> 
             </p>
 
             <table>
@@ -1186,7 +1186,7 @@ if(isset($_POST['signOutput'])) {
             </p>
 
             <p>
-                ART. 2. – Prin prezentul proces verbal, beneficiarul atesta bransarea la reteaua URBAN si buna functionare a serviciilor:
+                ART. 2. - Prin prezentul proces verbal, beneficiarul atesta bransarea la reteaua URBAN si buna functionare a serviciilor:
             </p>
 
             <table>
@@ -1250,7 +1250,7 @@ if(isset($_POST['signOutput'])) {
             </table>
 
             <p style = "text-align: center;">
-                <strong>Suport Tehnic:&nbsp;</strong> – 0241 700 000 intre orele 08:00 – 20:00, 07INTERNET – NONSTOP, E-MAIL – &nbsp;<strong>client@07internet.ro:&nbsp;</strong> – NONSTOP.
+                <strong>Suport Tehnic:&nbsp;</strong> - 0241 700 000 intre orele 08:00 - 20:00, 07INTERNET - NONSTOP, E-MAIL - &nbsp;<strong>client@07internet.ro:&nbsp;</strong> - NONSTOP.
             </p>
 
             <h3 style = "text-align: center;">URBAN NETWORK SOLUTIONS S.R.L.</h3>
