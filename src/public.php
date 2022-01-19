@@ -19,7 +19,7 @@ $user = $security -> getUser();
 
 // Check if user is client, if not send an error message.
 if(!$user -> isClient) {
-    \App\Http::forbidden();
+    App\Http::forbidden();
 }
 
 // Render form

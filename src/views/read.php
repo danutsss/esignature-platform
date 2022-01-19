@@ -1,7 +1,7 @@
 <?php
 
 ob_start();
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_NOTICE);
 
 //references to Ubnt, Dompdf, ...
 use Ubnt\UcrmPluginSdk\Data\UcrmUser;
@@ -10,8 +10,8 @@ use Ubnt\UcrmPluginSdk\Service\UcrmSecurity;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
-
-define('NOT_FOUND', 'Nu a fost gasit.');
+use esignaturePlatform\Factory\PluginDataFactory;
+use Ubnt\UcrmPluginSdk\Service\PluginLogManager;
 
 // Ensure that user is logged in and has permission to sign the contract.
 $security = UcrmSecurity::create();
@@ -23,41 +23,41 @@ if(!$user -> isClient) {
 
 // Client Information
 $clientId = $user -> clientId;
-$firstName = (isset($_GET['firstName']) ? $_GET['firstName'] : NOT_FOUND);
-$lastName = (isset($_GET['lastName']) ? $_GET['lastName'] : NOT_FOUND);
-$fullAddress = (isset($_GET['fullAddress']) ? $_GET['fullAddress'] : NOT_FOUND);
-$compTaxID = (isset($_GET['companyTaxId']) ? $_GET['companyTaxId'] : NOT_FOUND);
-$compRegNo = (isset($_GET['companyRegistrationNumber']) ? $_GET['companyRegistrationNumber'] : NOT_FOUND);
-$city = (isset($_GET['city']) ? $_GET['city'] : NOT_FOUND);
-$street1 = (isset($_GET['street1']) ? $_GET['street1'] : NOT_FOUND);
-$street2 = (isset($_GET['street2']) ? $_GET['street2'] : NOT_FOUND);
-$orgName = (isset($_GET['organizationName']) ? $_GET['organizationName'] : NOT_FOUND);
+$firstName = (isset($_GET['firstName']) ? $_GET['firstName'] : null);
+$lastName = (isset($_GET['lastName']) ? $_GET['lastName'] : null);
+$fullAddress = (isset($_GET['fullAddress']) ? $_GET['fullAddress'] : null);
+$compTaxID = (isset($_GET['companyTaxId']) ? $_GET['companyTaxId'] : null);
+$compRegNo = (isset($_GET['companyRegistrationNumber']) ? $_GET['companyRegistrationNumber'] : null);
+$city = (isset($_GET['city']) ? $_GET['city'] : null);
+$street1 = (isset($_GET['street1']) ? $_GET['street1'] : null);
+$street2 = (isset($_GET['street2']) ? $_GET['street2'] : null);
+$orgName = (isset($_GET['organizationName']) ? $_GET['organizationName'] : null);
 $clientType = (isset($_GET['clientType']) ? $_GET['clientType'] : null);
-$invoiceStreet1 = (isset($_GET['invoiceStreet1']) ? $_GET['invoiceStreet1'] : NOT_FOUND);
-$invoiceStreet2 = (isset($_GET['invoiceStreet2']) ? $_GET['invoiceStreet2'] : NOT_FOUND);
-$invoiceCity = (isset($_GET['invoiceCity']) ? $_GET['invoiceCity'] : NOT_FOUND);
-$invoiceZIP = (isset($_GET['invoiceZipCode']) ? $_GET['invoiceZipCoide'] : NOT_FOUND);
+$invoiceStreet1 = (isset($_GET['invoiceStreet1']) ? $_GET['invoiceStreet1'] : null);
+$invoiceStreet2 = (isset($_GET['invoiceStreet2']) ? $_GET['invoiceStreet2'] : null);
+$invoiceCity = (isset($_GET['invoiceCity']) ? $_GET['invoiceCity'] : null);
+$invoiceZIP = (isset($_GET['invoiceZipCode']) ? $_GET['invoiceZipCoide'] : null);
 $attributes = (isset($_GET['attributes']) ? $_GET['attributes'] : [
-    $attrName = (isset($_GET['name']) ? $_GET['name'] : NOT_FOUND),
-    $attrKey = (isset($_GET['key']) ? $_GET['key'] : NOT_FOUND),
-    $attrValue = (isset($_GET['value']) ? $_GET['value'] : NOT_FOUND),
+    $attrName = (isset($_GET['name']) ? $_GET['name'] : null),
+    $attrKey = (isset($_GET['key']) ? $_GET['key'] : null),
+    $attrValue = (isset($_GET['value']) ? $_GET['value'] : null),
 ]);
 
 // Client Contacts Information
-$email = (isset($_GET['email']) ? $_GET['email'] : NOT_FOUND);
-$phone = (isset($_GET['phone']) ? $_GET['phone'] : NOT_FOUND);
-$name = (isset($_GET['name']) ? $_GET['name'] : NOT_FOUND);
+$email = (isset($_GET['email']) ? $_GET['email'] : null);
+$phone = (isset($_GET['phone']) ? $_GET['phone'] : null);
+$name = (isset($_GET['name']) ? $_GET['name'] : null);
 
 // Service Information
-$serviceId = (isset($_GET['id']) ? $_GET['id'] : NOT_FOUND);
-$serviceName = (isset($_GET['name']) ? $_GET['name'] : NOT_FOUND);
-$servicePrice = (isset($_GET['price']) ? $_GET['price'] : NOT_FOUND);
-$activeFrom = (isset($_GET['activeFrom']) ?  $_GET['activeFrom'] : NOT_FOUND);
-$activeTo = (isset($_GET['activeTo']) ? $_GET['activeTo'] : NOT_FOUND);
-$serviceStreet1 = (isset($_GET['street1']) ? $_GET['street1'] : NOT_FOUND);
-$serviceStreet2 = (isset($_GET['street2']) ? $_GET['street2'] : NOT_FOUND);
-$serviceCity = (isset($_GET['city']) ? $_GET['city'] : NOT_FOUND);
-$serviceZIP = (isset($_GET['zipCode']) ? $_GET['zipCode'] : NOT_FOUND);
+$serviceId = (isset($_GET['id']) ? $_GET['id'] : null);
+$serviceName = (isset($_GET['name']) ? $_GET['name'] : null);
+$servicePrice = (isset($_GET['price']) ? $_GET['price'] : null);
+$activeFrom = (isset($_GET['activeFrom']) ?  $_GET['activeFrom'] : null);
+$activeTo = (isset($_GET['activeTo']) ? $_GET['activeTo'] : null);
+$serviceStreet1 = (isset($_GET['street1']) ? $_GET['street1'] : null);
+$serviceStreet2 = (isset($_GET['street2']) ? $_GET['street2'] : null);
+$serviceCity = (isset($_GET['city']) ? $_GET['city'] : null);
+$serviceZIP = (isset($_GET['zipCode']) ? $_GET['zipCode'] : null);
 
 // API doRequest - Client Information & Custom Attributes
 $client = UCRMAPIAccess::doRequest(sprintf('clients/%d', $clientId),
@@ -364,8 +364,6 @@ $HTML = '
                 <td>
                     <p>
                         <strong>Telefon:&nbsp;</strong>'.$contact['phone'].' <br>
-                        <strong>Username:&nbsp;</strong>'.$client['attributes'][0]['value'].' <br>
-                        <strong>Parola:&nbsp;</strong>'.$client['attributes'][20]['value'].'
                     </p>
                 </td>
 
@@ -971,6 +969,32 @@ $HTML = '
             17.3. Clientul este de acord ca reclamatiile formulate sa fie inregistrate. Fiecare reclamatie va fi preluata, fie direct de la client, fie prin fax, impreuna cu datele de identificare si de contact ale acestuia sau ale reprezentantului acestuia. Reclamatia va fi inregistrata in baza de date pentru deranjamente, va primi un numar unic si va fi imediat transmisa spre verificare si solutionare a serviciului responsabil sa rezolve tipul reclamatiei respective. Imediat ce problema a fost identificate si diagnosticata, clientul va fi informat cu privire la perioada maxima in care va avea loc remedierea defectiunii reclamate. Odata cu solutionarea reclamatiei, reprezentantul URBAN care a primit si inregistrat reclamatia, va inregistra in baza de date modul de solutionare a reclamatiei / data solutionarii sau stadiul acesteia. Intocmit in doua exemplare, impreuna cu anexele, cate unul pentru fiecare parte, declara ca se afla in posesia unui exempler complet, inclusiv anexe si orice alte documente in legatura cu contractul.
         </p>
 
+        <h3>18. Dreptul de retragere in cazul contractelor incheiate la distanta (valabil pentru persoane fizice)</h3>
+        <h3>18.1. Informatii privind exercitarea dreptului de retragere</h3>
+        <p>
+            18.1.1. Dreptul de retragere
+            <br>
+            Aveti dreptul de a va retrage din prezentul contract, fara a preciza motivele, in termen de 14 zile. Perioada de 
+            retragere expira dupa 14 zile incepand de la ziua incheierii contractului.
+            <br>
+            Pentru a va exercita dreptul de retragere trebuie sa ne informati cu privire la decizia dumneavoastra de a va 
+            retrage din prezentul contract.
+            <br>
+            Solicitarea de retragere din contract poate fi transmisa online, prin intermediul formularului de contact 
+            disponibil in contul de client, sau e-mail (aceste date de contact le regasiti in contractul incheiat). 
+            Solicitarea trebuie sa fie neechivoca. In acest scop, puteti folosi modelul de retragere din contul de client. 
+            Daca optati pentru modalitatea de transmitere online, va vom transmite fara intarziere, prin-email, confirmarea 
+            de primirea cererii de retragere.
+            <br>
+            Pentru a respecta termenul-limita de retragere este suficient sa transmiteti solicitarea privind 
+            exercitarea dreptului de retragere inainte de expirarea perioadei de retragere.
+        </p>
+        <h3>18.2. Consecintele retragerii</h3>
+        <p>
+            Daca ati solicitat inceperea prestarii serivicului de furnizare in perioada de retragere, ne datorati o suma 
+            reprezentand contravaloarea serviciilor furnizate pana la data incetarii contractului, precum si o taxa de instalare.
+        </p>
+
         <h1>CONDITII GENERALE DE FURNIZARE A SERVICIILOR URBAN ("CONDITII GENERALE") - ANEXA A.1</h1>
         <h3 style = "text-align: center;">LA CONTRACTUL NR.:&nbsp;'.$clientId.'</h3>
         <h3 style = "text-align: center;">PREVEDERI SPECIFICE SERVICIULUI DE INTERNET SI TELEVIZIUNE</h3>
@@ -1077,7 +1101,9 @@ $HTML = '
         <h5 class = "header__phone" style = "font-weight: bold;">CTR NR.:&nbsp;'.$clientId.'</h5>
 
         <p>
-            ART. 1. - URBAN NETWORK SOLUTIONS S.R.L,<strong> 
+            ART. 1. - URBAN NETWORK SOLUTIONS S.R.L, cu sediul in <strong>Navodari, str. Midiei nr. 6, jud. Constanta</strong>, J13/1022/2017,
+            <strong>CUI:</strong> 37374276, Unicredit Navodari, <strong>CONT:</strong> RO70 BACX 0000 0014 5390 8001, reprezentata de
+            <strong>Lazar Stefan</strong> in calitate de <strong>director general</strong>, a procedat la predarea urmatoarelor echipamente:
         </p>
 
         <table>
@@ -1188,7 +1214,7 @@ $HTML = '
                     </td>
 
                     <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>Denumire echipament</p>
+                        <p>Serviciu</p>
                     </td>
 
                     <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
@@ -1603,6 +1629,7 @@ $PDF -> setPaper('A4', 'portrait');
 
 // Render the HTML as PDF.
 $PDF -> render();
+
 
 // Output the generated PDF to phone and browser (1 = Download, 0 = Preview).
 // If phone is detected, the file must be downloaded.
