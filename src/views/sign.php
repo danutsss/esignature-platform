@@ -411,7 +411,7 @@ if(isset($_POST['signOutput'])) {
                             </li>
                             <li>
                                 <p>
-                                    <strong>Activ pana la:&nbsp;</strong>'.$responseS['activeTo'].'
+                                    <strong>Minim:&nbsp;</strong>'.$responseS['minimumContractLengthMonths'].' luni
                                 </p>
                             </li>
                             <li>

@@ -10,8 +10,6 @@ use Ubnt\UcrmPluginSdk\Service\UcrmSecurity;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use esignaturePlatform\Factory\PluginDataFactory;
-use Ubnt\UcrmPluginSdk\Service\PluginLogManager;
 
 // Ensure that user is logged in and has permission to sign the contract.
 $security = UcrmSecurity::create();
@@ -403,7 +401,7 @@ $HTML = '
                         </li>
                         <li>
                             <p>
-                                <strong>Activ pana la:&nbsp;</strong>'.$responseS['activeTo'].'
+                                <strong>Minim:&nbsp;</strong>'.$responseS['minimumContractLengthMonths'].' luni
                             </p>
                         </li>
                         <li>
