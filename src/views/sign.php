@@ -166,7 +166,7 @@ if(isset($_POST['signOutput'])) {
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
             }
-
+    
             footer {
                 position: fixed;
                 bottom: 0cm;
@@ -174,11 +174,11 @@ if(isset($_POST['signOutput'])) {
                 right: 0cm;
                 height: 2.5cm;
                 clear: both;
-
+    
                 /** Extra personal styles **/
                 line-height: 1.5cm;
             }
-
+    
             .wrapper {
                 font-size: 13px;
                 line-height: 1.4;
@@ -237,9 +237,6 @@ if(isset($_POST['signOutput'])) {
         </style>
     </head>
     <body>
-        <footer>
-            <img style = "margin-left: 500px;" src = "'.$sign_output.'">
-        </footer>
         <div class = "wrapper">
             <table>
                 <tbody>
@@ -271,7 +268,7 @@ if(isset($_POST['signOutput'])) {
                         Informatii despre prestator
                     </th>
                 </tr>
-
+    
                 <tr>
                     <td colspan = "2">
                         <p>
@@ -283,7 +280,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
                 </tbody>
             </table>
-
+    
             <table class = "paragraph">
                 <tbody>
                 <tr>
@@ -294,7 +291,7 @@ if(isset($_POST['signOutput'])) {
                         Informatii despre client
                     </th>
                 </tr>
-
+    
                 <tr>
                     <td colspan = "2">
                         <p>
@@ -306,7 +303,7 @@ if(isset($_POST['signOutput'])) {
                         </p>
                     </td>
                 </tr>
-
+    
                 <tr>
                     <td colspan = "2">
                         <p>
@@ -320,7 +317,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
                 </tbody>
             </table>
-
+    
             <table>
                 <tbody>
                 <tr>
@@ -331,28 +328,28 @@ if(isset($_POST['signOutput'])) {
                             Certificat de inregistrare
                         </p>
                     </td>
-
+    
                     <td>
                         <p>
-                            <strong>Serie C.I.:&nbsp;</strong>'.$client['attributes'][1]['value'].'
-                            <strong>Numar C.I.:&nbsp;</strong>'.$client['attributes'][2]['value'].' <br>
-                            <strong>Cod Numeric Personal:&nbsp;</strong>'.$client['attributes'][3]['value'].' <br>
+                            <strong>Serie C.I.:&nbsp;</strong>'.$client['attributes'][0]['value'].'
+                            <strong>Numar C.I.:&nbsp;</strong>'.$client['attributes'][1]['value'].' <br>
+                            <strong>Cod Numeric Personal:&nbsp;</strong>'.$client['attributes'][2]['value'].' <br>
                             <strong>Cod fiscal:&nbsp;</strong>'.$client['companyTaxId'].' <br>
                             <strong>Nr. reg. comert:&nbsp;</strong>'.$client['companyRegistrationNumber'].'
                         </p>
                     </td>
-
+    
                     <td>
                         <p>
-                            <strong>Emis de:&nbsp;</strong>'.$client['attributes'][4]['value'].'
-                            <strong>la data de:&nbsp;</strong>'.$client['attributes'][5]['value'].'
+                            <strong>Emis de:&nbsp;</strong>'.$client['attributes'][3]['value'].'
+                            <strong>la data de:&nbsp;</strong>'.$client['attributes'][4]['value'].'
                         </p>
                     </td>
-
+    
                 </tr>
                 </tbody>
             </table>
-
+    
             <table>
                 <tbody>
                 <tr>
@@ -368,20 +365,20 @@ if(isset($_POST['signOutput'])) {
                             <strong>Strada:&nbsp;</strong>'.$client['invoiceStreet1'] . ' '. $client['invoiceStreet2'].'
                         </p>
                     </td>
-
+    
                     <td>
                         <p>
                             <strong>Telefon:&nbsp;</strong>'.$contact['phone'].' <br>
                         </p>
                     </td>
-
+    
                 </tr>
                 </tbody>
             </table>
-
+    
             <table class = "paragraph">
                 <tbody>
-
+    
                 <tr>
                     <th>
                         3
@@ -390,43 +387,49 @@ if(isset($_POST['signOutput'])) {
                         Serviciul contractat
                     </th>
                 </tr>
-
+    
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "2">';
+    
+                    foreach($services as $service) {
+                        $HTML .= "
                         <ul>
                             <li>
                                 <p>
-                                    <strong>Denumire:&nbsp;</strong>'.$responseS['name'].'
+                                    <strong>Denumire:&nbsp;</strong>" . $service['name'] . "
                                 </p>
                             </li>
                             <li>
                                 <p>
-                                    <strong>Pret:&nbsp;</strong>'.$responseS['price'].' RON
+                                    <strong>Pret:&nbsp;</strong>" . $service['price'] . "
                                 </p>
                             </li>
                             <li>
                                 <p>
-                                    <strong>Activat la:&nbsp;</strong>'.$responseS['activeFrom'].'
+                                    <strong>Activat la:&nbsp;</strong>" . $service['activeFrom'] . "
                                 </p>
                             </li>
                             <li>
                                 <p>
-                                    <strong>Minim:&nbsp;</strong>'.$responseS['minimumContractLengthMonths'].' luni
+                                    <strong>Minim:&nbsp;</strong>" . $service['minimumContractLengthMonths'] . " luni
                                 </p>
                             </li>
                             <li>
                                 <p>
-                                    <strong>Adresa:&nbsp;</strong>'.$responseS['street1'].', '.$responseS['street2'].',
-                                    <strong>oras:&nbsp;</strong>'.$responseS['city'].', '.$responseS['zipCode'].'
+                                    <strong>Adresa:&nbsp;</strong>".$service['street1']." ".$service['street2']."
+                                    <strong>oras:&nbsp;</strong>" . $service['city'].", ".$service['zipCode']."
                                 </p>
                             </li>
-                        </ul>
+                        </ul>";
+                    }
+    
+    $HTML .= '
                     </td>
                 </tr>
-
+    
                 </tbody>
             </table>
-
+    
             <table class = "paragraph">
                 <tbody>
                 <tr>
@@ -439,7 +442,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
                 </tbody>
             </table>
-
+    
             <table class = "paragraph">
                 <tbody>
                 <tr>
@@ -452,21 +455,21 @@ if(isset($_POST['signOutput'])) {
                 </tr>
                 </tbody>
             </table>
-
+    
             <table class = "paragraph">
                 <tbody>
                 <tr>
                     <th>
                         6
                     </th>
-
+    
                     <th>
                         Din prezentul contract fac parte:
                     </th>
                 </tr>
                 </tbody>
             </table>
-
+    
             <table>
                 <tbody>
                 <tr>
@@ -476,7 +479,7 @@ if(isset($_POST['signOutput'])) {
                         </p>
                     </td>
                 </tr>
-
+    
                 <tr>
                     <td colspan = "2">
                         <p>
@@ -484,7 +487,7 @@ if(isset($_POST['signOutput'])) {
                         </p>
                     </td>
                 </tr>
-
+    
                 <tr>
                     <td colspan = "2">
                         <p>
@@ -492,7 +495,7 @@ if(isset($_POST['signOutput'])) {
                         </p>
                     </td>
                 </tr>
-
+    
                 <tr>
                     <td colspan = "2">
                         <p>
@@ -500,7 +503,7 @@ if(isset($_POST['signOutput'])) {
                         </p>
                     </td>
                 </tr>
-
+    
                 <tr>
                     <td colspan = "2">
                         <p>
@@ -508,7 +511,7 @@ if(isset($_POST['signOutput'])) {
                         </p>
                     </td>
                 </tr>
-
+    
                 <tr>
                     <td colspan = "2">
                         <p>
@@ -518,7 +521,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
                 </tbody>
             </table>
-
+    
             <h2>CONDITII GENERALE DE FURNIZARE A SERVICIILOR URBAN ("CONDITII GENERALE") - ANEXA A.1</h2>
             <h3>1. Definitii: </h3>
             <p>
@@ -612,7 +615,7 @@ if(isset($_POST['signOutput'])) {
                 contractuale prin notificarea clientului de catre furnizor in vederea formularii in scris de catre
                 client a unei optiuni de prelungire a valabilitatii acestuia.
             </p>
-
+    
             <h3>3. Instalarea si punerea in functiune a serviciului. Echipament.</h3>
             <p>
                 3.1. Instalarea si punerea in functiune a serviciului se face in termenul de 5 (cinci) zile
@@ -707,7 +710,7 @@ if(isset($_POST['signOutput'])) {
                 instantei sau alte formalitati prealabile, pe baza unei notificari prealabile scrise de 15
                 (cincisprezece) zile.
             </p>
-
+    
             <h3>5. Drepturile si obligatiile furnizorului</h3>
             <p>
                 5.1. Furnizorul este singurul autorizat sa execute lucrari de instalare, bransare, verificare,
@@ -736,7 +739,7 @@ if(isset($_POST['signOutput'])) {
                 adresa cu clientul, daca acestia inregistreaza datorii catre URBAN, inclusivdaca acestea rezulta din
                 alte contracte sau di orice alte raporturi juridice.
             </p>
-
+    
             <h3>6. Drepturile si obligatiile clientului</h3>
             <p>
                 6.1. Clientul nu va interveni asupra echipamentelor sau lucrarilor realizate de catre furnizor in
@@ -794,7 +797,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 <strong>b)&nbsp;</strong>fie contractul inceteaza de plin drept, fara despagubiri.
             </p>
-
+    
             <h3>8. Cesiunea contractului</h3>
             <p>
                 8.1. Drepturile si obligatiile furnizorului nascuta din sau in legatura cu prezentul contract pot fi
@@ -804,7 +807,7 @@ if(isset($_POST['signOutput'])) {
                 8.2. Clientului ii este interzisa cesiunea, redistribuirea sau revanzarea serviciului /
                 echipamentelor furnizate, fara acordul scris al furnizorului.
             </p>
-
+    
             <h3>9. Suspendarea furnizarii serviciului</h3>
             <p>
                 9.1. Neplata totala a facturii peste 15 (cincisprezece) zile fata de termenul scadent da dreptul
@@ -827,7 +830,7 @@ if(isset($_POST['signOutput'])) {
                 suspendare. Perioada minima se va prelungi cu perioada de suspendare. Daca clientul a contractat mai
                 multe servicii, suspendarea unui serviciu implica suspendarea tuturor serviciilor.
             </p>
-
+    
             <h3>10. Incetarea contractului</h3>
             <p>
                 10.1. URBAN are dreptul de a denunta unilateral contractul, cu o notificare prealabila scrisa de 2 (doua) zile, in urmatoarele situatii:
@@ -858,7 +861,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 10.7. Clientul nu datoreaza despagubiri pentru incetare prematura in cazul schimbarii locatiei la care serviciile sunt furnizate, daca furnizorul nu are solutie tehnica pentru furnizarea serviciilor la noua locatie. Prin "locatie" in sensul acestui paragraf se intelege o noua locatie a clientului aflata in raza teritoriala de activitate a furnizorului.
             </p>
-
+    
             <h3>11. Prelucrarea informatiei</h3>
             <p>
                 11.1. Baza legala a prelucrarilor
@@ -892,21 +895,21 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 Pentru indeplinirea anumitor obligatii ale 07INTERNET (de exemplu, instalarea echipamentelor la adresa clientului, remedierea defectiunilor tehnice, relatia cu clienti, actiuni de reclama, marketing, publiciate si sondaje), se folosesc subcontractori. In selectarea acestor subcontractor, 07INTERNET se asigura ca acestia respecta la randul lor drepturile dumneavoastra cu privire la prelucrarea datelor cu caracter personal astfel cum sunt detaliate in &nbsp;<strong>"Informare"</strong>. Categorii de subcontractori: agentii de marketing, societati ce desfasoara activitati de instalare / reparatii, de procesare a platilor, distributie / curierat, de tipografie, de sondaj, de call-center, de recuperare / colectare debite. In conformitate cu&nbsp;<strong>"Informarea"</strong>, anumite activitati (de exemplu, efectuarea statisticilor si a analizelor, asigurarea functionarii serviciilor) vor presupune dezvaluirea datelor personale catre afiliatii nostri (de exemplu, companiei noastre mama, altor companii din cadrul grupului 07INTERNET).
             </p>
-
+    
             <h3>12. Notificari</h3>
             <p>
                 12.1. Clientul va trimite notificarile mentionate in contract la sediul furnizorului, prin scrisoare recomandata cu confirmare de primire. Notificarile comunicate la alte adrese nu vor fi opozabile.
                 <br>
                 12.2. Furnizorul poate notifica clientul prin afisare in casieriile proprii, prin afisare pe paginile online proprii, telefon sau scrisoare trimisa la adresele specificate de client in contract.
             </p>
-
+    
             <h3>13. Lege. Litigii</h3>
             <p>
                 13.1. Contractul este guvernat de legea romana.
                 <br>
                 13.2. Orice neintelegere privind executarea contractului va fi rezolvata amiabil. Daca o astfel de rezolvare nu e posibila, litigiul va fi inainte instantelor judecatoresti.
             </p>
-
+    
             <h3>14. Fraude</h3>
             <p>
                 14.1. Clientul declara in mod expres ca intelege ca serviciile ii sunt destinate si furnizate numai in calitatea sa de utilizator final si numai pentru scopurile mentionate in contract.
@@ -935,7 +938,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 <strong>d)&nbsp;</strong>sa ia masurile prevazute in politica de securitate a URBAN, de asemenea, clientul este responsabil pentru daunele rezultate din neindeplinirea obligatiilor asumate prin prezentul articol.
             </p>
-
+    
             <h3>15. Forta majora</h3>
             <p>
                 15.1. Daca nu se prevede altfel in contract, forta majora exonereaza de raspundere partea care o invoca, dar numai in masura si pentru perioada in care indeplinirea clauzelor contractuale este impiedicata sau intarziata de situatia de forta majora.
@@ -946,7 +949,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 15.4. Daca evenimentul de forta majora dureaza mai mult de 3 (trei) luni, oricare dintre parti va avea dreptul de a denunta unilateral contractul.
             </p>
-
+    
             <h3>16. Limitarea raspunderii</h3>
             <p>
                 16.1. Furnizorul raspunde de functionarea S.C. URBAN S.R.L. serviciilor pana la punctul terminal de retea.
@@ -967,7 +970,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 16.4. Exceptand cazurile in care se prevede altfel in contract, niciuna din parti nu este raspunzatoare fata de cealalta parte pentru niciun fel de daune indirecte sau daune de orice natura cum ar fi, dar fara a se limita la acestea, beneficiul nerealizat, pierderi de clienti, pierderi de profit, afectare a reputatiei sau pierderea de oportunitati de afaceri etc.
             </p>
-
+    
             <h3>17. Informatii si Relatii cu Clientii</h3>
             <p>
                 17.1. Orice informatii suplimentare privind serviciile pot fi obtinute de la sediul / casieriile furnizorului, apeland gratuit &nbsp;<strong>Serviciul Vanzari si Relatii cu Clientii:&nbsp;</strong>sau accesand domeniul https://www.ctaonline.ro.
@@ -976,7 +979,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 17.3. Clientul este de acord ca reclamatiile formulate sa fie inregistrate. Fiecare reclamatie va fi preluata, fie direct de la client, fie prin fax, impreuna cu datele de identificare si de contact ale acestuia sau ale reprezentantului acestuia. Reclamatia va fi inregistrata in baza de date pentru deranjamente, va primi un numar unic si va fi imediat transmisa spre verificare si solutionare a serviciului responsabil sa rezolve tipul reclamatiei respective. Imediat ce problema a fost identificate si diagnosticata, clientul va fi informat cu privire la perioada maxima in care va avea loc remedierea defectiunii reclamate. Odata cu solutionarea reclamatiei, reprezentantul URBAN care a primit si inregistrat reclamatia, va inregistra in baza de date modul de solutionare a reclamatiei / data solutionarii sau stadiul acesteia. Intocmit in doua exemplare, impreuna cu anexele, cate unul pentru fiecare parte, declara ca se afla in posesia unui exempler complet, inclusiv anexe si orice alte documente in legatura cu contractul.
             </p>
-
+    
             <h3>18. Dreptul de retragere in cazul contractelor incheiate la distanta (valabil pentru persoane fizice)</h3>
             <h3>18.1. Informatii privind exercitarea dreptului de retragere</h3>
             <p>
@@ -1002,11 +1005,11 @@ if(isset($_POST['signOutput'])) {
                 Daca ati solicitat inceperea prestarii serivicului de furnizare in perioada de retragere, ne datorati o suma 
                 reprezentand contravaloarea serviciilor furnizate pana la data incetarii contractului, precum si o taxa de instalare.
             </p>
-
+    
             <h1>CONDITII GENERALE DE FURNIZARE A SERVICIILOR URBAN ("CONDITII GENERALE") - ANEXA A.1</h1>
             <h3 style = "text-align: center;">LA CONTRACTUL NR.:&nbsp;'.$clientId.'</h3>
             <h3 style = "text-align: center;">PREVEDERI SPECIFICE SERVICIULUI DE INTERNET SI TELEVIZIUNE</h3>
-
+    
             <h3>1. Definitii - in cazul in care legea nu prevede altfel, termenii folositi vor avea urmatoarele defintii: </h3>
             <p>
                 (1) &nbsp;<strong>Adresa IP:&nbsp;</strong>identificator unic pentru un calculator personal sau pentru un echipament intr-o retea TCP / IP;
@@ -1019,14 +1022,14 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 (5) &nbsp;<strong>Retea metropolitana:&nbsp;</strong>totalitatea resurselor electronice accesibile in reteaua IP a clientului pana la punctul de delimitare cu reteaua Internet.
             </p>
-
+    
             <h3>2. Descrierea serviciului</h3>
             <p>
                 2.1. Serviciul de acces la Internet, se refera la accesul la Internet prin asigurarea transmiterii pachetelor de date ale clientului din si catre reteaua Internet precum si asigurarea vizibilitatii spre Internet a adreselor atribuite clientului. Furnizorul va aloca un IP pe baza adresei MAC a interfete de conectare a echipamentului personal al clientului.
                 <br>
                 2.2. Furnizorul se obligasa furnizeze serviciul cu o rata de transfer mai mare sau cel putin egala cu rata de transfer minima aferenta tipului de abonament solicitat de catre client si precizat in &nbsp;<strong>ANEXA A</strong>.
             </p>
-
+    
             <h3>3. Functionarea serviciului. Disfunctionalitati</h3>
             <p>
                 3.1. Furnizorul asigura disponibilitatea serviciului 24 (douazeci si patru) de ore din 24 (douazeci si patru), 7 (sapte) zile din 7 (sapte) pe saptamana, 365 (treisutesaizecisicinci) de zile pe an, asigurand o disponibilitate minima a servicului de 95%.
@@ -1045,7 +1048,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 3.6. In cazul in care clientul solicita , reprezentatii furnizorului se vor deplasa la locatia clientului in maxim 72 de ore. Personalul furnizorului va efectua strict doar operatiunile de repunere in functiune fara a efectua devirusari, reinstalari de sisteme de operare, etc.
             </p>
-
+    
             <h3>4. Limitarea raspunderii</h3>
             <p>
                 4.1. Clientul declara ca a fost informat ca dupa transmiterea pachetelor de date si mesajelor de posta electronica in reteaua Internet, Furnizorul nu mai detine controlul asupra traseului urmat de acestea, existand posibilitatea ca acestea sa nu soseasca la destinatie sau sa soseasca cu intarziere sau ca un anumit site nu este accesibil la momentul dat.
@@ -1058,7 +1061,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 <strong>c)&nbsp;</strong>prejudiciile suferite de client ca urmare a accesului neautorizat al unor terte persoane, in reteaua sa de comunicatii.
             </p>
-
+    
             <h3>5. Drepturile si obligatiile clientului</h3>
             <p>
                 5.1. In plus, fata de drepturile si obligatiile mentionate in &nbsp;<strong>Conditiile Generale de Furnizare a Serviciilor URBAN</strong>, clientul se obliga:
@@ -1071,7 +1074,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 Raspunderea furnizorului nu va fi angajata in cazul infiltrarii unui tert in sistemul informatic al clientului, acesta ramanand singurul responsabil de protectia propriului sau sistem informatic.
             </p>
-
+    
             <h3>6. Transmiterea si accesul informatiilor si serviciilor protejate</h3>
             <p>
                 6.1. Clientului ii este interzis:
@@ -1088,7 +1091,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 6.2. Clientul nu are permisiunea sa utilizeze reteaua si serviciul pentru transmiterea, distribuirea sau stocarea de materiale ce incalca legi sau regulamente aplicabile.
             </p>
-
+    
             <h3>7. Alte clauze</h3>
             <p>
                 7.1. In scopul protejarii retelei furnizorului, dar si a sistemului informatic al clientului, furnizorul are dreptul sa deconecteze temporar adresele IP ale clientului, cu notificarea prealabila a acestuia, in cazul in care constata ca clientul este tinta unor atacuri de tip flood ori "denial of service", pana la solutionarea acestor probleme.
@@ -1101,183 +1104,183 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 7.5. Serviciul este furnizat cu respectarea parametrilor de calitate mentionati in Decizia Presedintelui ANRC nr. 138/2002.
             </p>
-
+    
             <br>
-
+    
             <h1>ANEXA C.1 - PROCES VERBAL DE ACCEPTANTA SI PUNERE IN FUNCTIUNE</h1>
             <h1>ANEXA C.2 - PROCES VERBAL DE PREDARE - PRIMIRE CUSTODIE ECHIPAMENTE</h1>
             <h5 class = "header__phone" style = "font-weight: bold;">CTR NR.:&nbsp;'.$clientId.'</h5>
-
+    
             <p>
                 ART. 1. - URBAN NETWORK SOLUTIONS S.R.L, cu sediul in <strong>Navodari, str. Midiei nr. 6, jud. Constanta</strong>, J13/1022/2017,
                 <strong>CUI:</strong> 37374276, Unicredit Navodari, <strong>CONT:</strong> RO70 BACX 0000 0014 5390 8001, reprezentata de
                 <strong>Lazar Stefan</strong> in calitate de <strong>director general</strong>, a procedat la predarea urmatoarelor echipamente:
             </p>
-
+    
             <table>
                 <tbody>
                     <tr>
                         <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>NR. CRT</p>
                         </td>
-
+    
                         <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>Denumire echipament</p>
                         </td>
-
+    
                         <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>Seria</p>
                         </td>
-
+    
                         <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>U.M.</p>
                         </td>
-
+    
                         <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>Cantitate</p>
                         </td>
                     </tr>
-
+    
                     <tr>
                         <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>1</p>
                         </td>
-
+    
                         <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][7]['value'].'</p>
+                            <p>'.$client['attributes'][6]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][10]['value'].'</p>
+                            <p>'.$client['attributes'][9]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][13]['value'].'</p>
+                            <p>'.$client['attributes'][12]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][16]['value'].'</p>
+                            <p>'.$client['attributes'][15]['value'].'</p>
                         </td>
                     </tr>
-
+    
                     <tr>
                         <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>2</p>
                         </td>
-
+    
                         <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][8]['value'].'</p>
+                            <p>'.$client['attributes'][7]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][11]['value'].'</p>
+                            <p>'.$client['attributes'][10]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][14]['value'].'</p>
+                            <p>'.$client['attributes'][13]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][17]['value'].'</p>
+                            <p>'.$client['attributes'][16]['value'].'</p>
                         </td>
                     </tr>
-
+    
                     <tr>
                         <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>3</p>
                         </td>
-
+    
                         <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][9]['value'].'</p>
+                            <p>'.$client['attributes'][8]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][12]['value'].'</p>
+                            <p>'.$client['attributes'][11]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][15]['value'].'</p>
+                            <p>'.$client['attributes'][14]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][18]['value'].'</p>
+                            <p>'.$client['attributes'][17]['value'].'</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
-
+    
             <p>
-                In perfecta stare de functionare d-lui (d-nei)&nbsp;<strong>'.$fullName.'</strong>, reprezentant al firmei&nbsp;<strong>'.$client['organizationName'].'</strong>, cu locatia in&nbsp;<strong>'.$client['city'] . ', '. $client['street1'] . ', '. $client['street2'].'</strong>, sector / judet&nbsp;<strong>Constanta</strong>, legitimat cu C.I.&nbsp;<strong>'.$client['attributes'][1]['value'].''.$client['attributes'][2]['value'].', C.N.P.: '.$client['attributes'][3]['value'].'</strong>, MAC ADDRESS: '.$client['attributes'][6]['value'].'.
+                In perfecta stare de functionare d-lui (d-nei)&nbsp;<strong>'.$fullName.'</strong>, reprezentant al firmei&nbsp;<strong>'.$client['organizationName'].'</strong>, cu locatia in&nbsp;<strong>'.$client['city'] . ', '. $client['street1'] . ', '. $client['street2'].'</strong>, sector / judet&nbsp;<strong>Constanta</strong>, legitimat cu C.I.&nbsp;<strong>'.$client['attributes'][0]['value'].''.$client['attributes'][1]['value'].', C.N.P.: '.$client['attributes'][2]['value'].'</strong>, MAC ADDRESS: '.$client['attributes'][5]['value'].'.
             </p>
-
+    
             <p>
                 ART. 2. - Prin prezentul proces verbal, beneficiarul atesta bransarea la reteaua URBAN si buna functionare a serviciilor:
             </p>
-
+    
             <table>
                 <tbody>
                     <tr>
                         <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>NR. CRT</p>
                         </td>
-
+    
                         <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>Serviciu</p>
                         </td>
-
+    
                         <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>U.M.</p>
                         </td>
                     </tr>
-
+    
                     <tr>
                         <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>1</p>
                         </td>
-
+    
                         <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][7]['value'].'</p>
+                            <p>'.$client['attributes'][6]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][13]['value'].'</p>
+                            <p>'.$client['attributes'][12]['value'].'</p>
                         </td>
                     </tr>
-
+    
                     <tr>
                         <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>2</p>
                         </td>
-
+    
                         <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][8]['value'].'</p>
+                            <p>'.$client['attributes'][7]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][14]['value'].'</p>
+                            <p>'.$client['attributes'][13]['value'].'</p>
                         </td>
                     </tr>
-
+    
                     <tr>
                         <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                             <p>3</p>
                         </td>
-
+    
                         <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][9]['value'].'</p>
+                            <p>'.$client['attributes'][8]['value'].'</p>
                         </td>
-
+    
                         <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                            <p>'.$client['attributes'][15]['value'].'</p>
+                            <p>'.$client['attributes'][14]['value'].'</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
-
+    
             <p style = "text-align: center;">
                 <strong>Suport Tehnic:&nbsp;</strong> - 0241 700 000 intre orele 08:00 - 20:00, 07INTERNET - NONSTOP, E-MAIL - &nbsp;<strong>client@07internet.ro:&nbsp;</strong> - NONSTOP.
             </p>
-
+    
             <h3 style = "text-align: center;">URBAN NETWORK SOLUTIONS S.R.L.</h3>
             <h3 style = "text-align: center;">ANEXA C.3 la Contract de prestari servicii internet nr.:&nbsp;<strong>'.$clientId.'&nbsp;</strong>.</h1>
             <h1>Informare cu privire la prelucrarea datelor cu caracter personal</h1>
@@ -1318,7 +1321,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 <strong>Date pentru registrele publice ale abonatilor:&nbsp;</strong>numele, adresa si numarul dumneavoastra de telefon
             </p>
-
+    
             <h2>Cum folosim datele dumneavoastra</h2>
             <h3>1. Pentru a va furniza serviciile contractate</h3>
             <p>
@@ -1343,7 +1346,7 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 -	administrarea platformei 07INTERNET si a contului dumneavoastra de client.
             </p>
-
+    
             <ul>
                 <li><h3>Ce date folosim pentru furnizarea serviciilor?</h3></li>
                 Ori de cate ori va furnizam serviciile 07INTERNET, folosim:
@@ -1368,7 +1371,7 @@ if(isset($_POST['signOutput'])) {
                 Prelucram o categorie larga de date cu caracter personal in vederea incheierii si executarii contractului, iar durata de pastrare pentru fiecare tip de date
                 difera in functie de necesitatea sau de obligatia pe care o avem, astfel:
                 <br>
-
+    
                     <strong>
                         a. 	<u>Furnizarea serviciilor de comunicatii electronice si prevenirea incidentelor de securitate</u>
                     </strong>
@@ -1378,7 +1381,7 @@ if(isset($_POST['signOutput'])) {
                     Pastram datele de trafic necesare transmiterii comunicatiei in internet, inclusiv localizarea retelelor Wi-Fi accesate, timp de o luna pentru a ne ajuta sa
                     identificam si sa prevenim posibile incidente de securitate asupra retelei care va pot afecta inclusiv pe dumneavoastra.
                     <br>
-
+    
                     <strong>
                         b. <u>Relatia contractuala si incasarea contravalorii serviciilor</u>
                     </strong>
@@ -1394,7 +1397,7 @@ if(isset($_POST['signOutput'])) {
                     <br>
                     De asemenea, din ratiuni fiscale, suntem obligati sa pastram toate informatiile aferente facturarii serviciilor furnizate pentru o perioada de 10 ani de la incetarea relatiei contractuale.
             </ul>
-
+    
             <ul>
                 <li><h3>Dezvaluim datele dumneavoastra?</h3></li>
                 In functie de activitatea la care ne raportam, dezvaluim datele dumneavoastra altor companii din cadrul grupului 07INTERNET, respectiv companiei noastra mama, filialelor sale sau altor companii aflate sub control
@@ -1405,7 +1408,7 @@ if(isset($_POST['signOutput'])) {
                 In situatia existentei unei datorii cu privire la relatia contractuala pe care o avem cu dumneavoastra, vom dezvalui datele dumneavoastra unor agenti de colectare debite/recuperare creante in vederea recuperarii
                 datoriei. Acestia va vor contacta in numele nostru. De asemenea, atunci cand cesionam creanta, va vom informa despre asta.
             </ul>
-
+    
             <ul>
                 <li><h3>Baza legala pentru prelucrarea acestor date</h3></li>
                 Incheierea si executarea contractului. In subsidiar, in baza interesului nostru legitim de a incasa complet si la timp contravaloarea serviciilor pe care vi le furnizam, precum si pentru a evalua gradul de
@@ -1413,7 +1416,7 @@ if(isset($_POST['signOutput'])) {
                 (ii) a monitoriza costurile suplimentare ale serviciului de telefonie si (iii) a verifica gradul de risc de neplata al unei zone de abonare, cat si al unui client nou, in baza istoricului sau de plata in relatia
                 cu 07INTERNET.
             </ul>
-
+    
             <h3>2. Pentru marketing, publicitate si sondaj de satisfactie</h3>
             <p>
                 Avem un interes legitim de a imbunatati experienta si calitatea serviciilor clientilor nostri, astfel incat sa beneficiati la maximum de produsele si de serviciile 07INTERNET. Utilizam datele dumneavoastra pentru
@@ -1451,25 +1454,25 @@ if(isset($_POST['signOutput'])) {
                     In situatia existentei unei datorii cu privire la relatia contractuala pe care o avem cu dumneavoastra, vom dezvalui datele dumneavoastra unor agenti de colectare debite/recuperare creante in vederea
                     recuperarii datoriei. Acestia va vor contacta in numele nostru. De asemenea, atunci cand cesionam creanta, va vom informa despre asta.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Baza legala pentru prelucrarea acestor date</h3></li>
                     Interesul legitim pentru prelucrari in scopuri de marketing, publicitate si sondaj de satisfactie si trimiterea de comunicari prin e-mail si consimtamant pentru comunicari trimise pe alte canale.
                 </ul>
             </p>
-
+    
             <h3>3. Pentru masurarea audientei</h3>
             <p>
                 Daca folositi un mediabox Horizon, accesam, transformam automat informatiile in date cu caracter anonim si agregam datele privind comportamentul TV al clientilor 07INTERNET
                 (de exemplu, posturile si programele urmarite, ora la care ati vizionat continutul si durata de vizionare), precum si utilizarea aplicatiilor din mediabox, pentru a genera un raport sumar de audienta.
                 Facem acest lucru si cand accesati canalele TV in mediul online, prin platforma Horizon Go. Acest raport ne ajuta sa optimizam serviciile, grila de programe si varietatea de aplicatii disponibile,
                 si in anumite situatii, sta la baza organizarii serviciilor altor entitati partenere, cum ar fi cei care difuzeaza continut TV sau continut publicitar.
-
+    
                 <ul>
                     <li><h3>Ce date folosim pentru a realiza aceste rapoarte combinate?</h3></li>
                     Datele TV, datele din aplicatiile 07INTERNET.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Cat timp pastram datele dumneavoastra?</h3></li>
                     Nu pastram datele dumneavoastra privinc comportamentul TV. Rapoartele de audienta se pastreaza cel mult 24 de luni.
@@ -1480,30 +1483,30 @@ if(isset($_POST['signOutput'])) {
                     Dezvaluim rapoartele de audienta companiilor din cadrul grupului 07INTERNET, companiei mama, filialelor ei sau altor companii aflate sub control comun, sau altor terti
                     (furnizorii de servicii de continut TV sau continut publicitar). Datele din cadrul rapoartelor nu pot duce la identificarea dumneavoastra.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Baza legala pentru prelucrarea acestor date</h3></li>
                     Legislatia cu privire la prelucrarea datelor personale permite prelucrarea datelor cu caracter anonim si agregate, acestea nefiind considerate date cu caracter personal.
                 </ul>
             </p>
-
+    
             <h3>4. Pentru recomandari TV personalizate</h4>
             <p>
                 Daca aveti unul dintre ultimele modele de mediabox Horizon oferite de catre 07INTERNET, vom activa o noua functionalitate ce ne va permite sa va furnizam recomandari personalizate de televiziune:
                 sa va amintim de show-urile preferate, sa va recomandam emisiuni/programe noi, adaptate gusturilor dumneavoastra, iar in baza istoricului dumneavoastra de vizionare, sa va sugeram cele mai vizionate canale.
                 Vom face asta daca avem consimtamantul dumneavoastra (pe care vi-l puteti exprima prin intermediul mediabox-ului si, de asemenea, vi-l puteti retrage oricand). Detalii despre aceasta functionalitate vor fi
                 disponibile in meniul mediabox-ului dumneavoastra. In aceasta activitate, nu analizam si nu luam in calcul vizionarea canalelor/emisiunilor dedicate entertainment-ului pentru adulti.
-
+    
                 <ul>
                     <li><h3>Ce date folosim?</h3></li>
                     Datele de contact, datele contului de client, datele TV.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Cat timp pastram datele dumneavoastra?</h3></li>
                     Recomandarile personalizate sunt bazate pe datele TV colectate in ultimele 3 luni de vizionare.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Dezvaluim datele dumneavoastra?</h3></li>
                     Pentru a analiza datele privind comportamentul si preferintele dumneavoastra TV si pentru a realiza rapoarte combinate si pseudonimizate pe care sa le furnizam altor entitati partenere,
@@ -1511,42 +1514,42 @@ if(isset($_POST['signOutput'])) {
                     Facem aceasta dezvaluire pentru a imbunatati furnizarea serviciilor si functionarea platformei Horizon. Intr-o astfel de situatie, ne asiguram ca Afiliatii respecta prezenta Informare.
                     Datele pseudonimizate sunt acele date care nu pot fi atribuite unui titular fara a folosi/verifica informatii suplimentare, stocate separat.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Baza legala pentru prelucrarea acestor date</h3></li>
                     Consimtamantul dumneavoastra.
                 </ul>
             </p>
-
+    
             <h3>5. Pentru scopuri statistice si de analiza</h3>
             <p>
                 Pentru a optimiza serviciile 07INTERNET si pentru a veni in intampinarea nevoilor clientilor 07INTERNET, extragem, transformam in date cu caracter anonim, combinam si agregam datele dumneavoastra
                 cu cele ale altor clienti, pentru a avea o imagine statistica a bazei de clienti 07INTERNET. Parte din politica companiei 07INTERNET presupune analiza datelor agregate pe care le avem,
                 in vederea dezvoltarii / optimizarii serviciilor si platformelor / produselor 07INTERNET in general, si nu pentru a lua actiuni privind o anume persoana.
-
+    
                 <ul>
                     <li><h3>Ce date folosim pentru a realiza aceste rapoarte?</h3></li>
                     Datele de contact, datele contului de client.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Cat timp pastram datele dumneavoastra?</h3></li>
                     Vom pastra rapoartele statistice pe durata necesara utilizarii lor.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Dezvaluim datele dumneavoastra?</h3></li>
                     Rezultatele rapoartelor statistice (care nu permit identificarea datelor dumneavoastra sau individualizarea dumneavoastra) si analizele bazate pe  aceste rapoarte pot fi dezvaluite companiei noastra mama
                     (07INTERNET), pentru evidentierea activitatii locale a companiei 07INTERNET, cat si pentru stabilirea unor directii de dezvoltare comerciale. Intr-o astfel de situatie, ne asiguram ca aceasta respecta
                     prezenta Informare.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Baza legala pentru prelucrarea acestor date</h3></li>
                     Scop de prelucrare compatibil cu scopul initial al prelucrarii datelor cu caracter personal.
                 </ul>
             </p>
-
+    
             <h3>6. Pentru a ne indeplini obligatiile legale</h3>
             <p>
                 Avem obligatia ca, la solicitarea autoritatilor publice, intocmita in conformitate cu prevederile legale aplicabile, sa comunicam catre acestea datele dumneavoastra. In cazul in care primim o solicitare de
@@ -1558,23 +1561,23 @@ if(isset($_POST['signOutput'])) {
                 care furnizeaza servicii de informatii privind abonatii, veti fi notificat de catre acestia. Compania 07INTERNET este obligata sa dezvaluie aceste date daca in termen de 45 de zile de la notificare
                 nu v-ati exprimat dezacordul cu privire la dezvaluire.
             
-
+    
                 <ul>
                     <li><h3>Ce date trebuie sa pastram?</h3></li>
                     Datele de contact, datele contului de client, datele de telefonie, datele de internet si date pentru registrele abonatilor.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Cat timp pastram datele dumneavoastra?</h3></li>
                     Va vom pastra datele pe toata durata necesara folosirii acestora, astfel cum este indicat de catre autoritatea competenta si in conformitate cu prevederile legislatiei aplicabile in vigoare.
                 </ul>
-
+    
                 <ul>
                     <li><h3>Baza legala pentru prelucrarea acestor date</h3></li>
                     Obligatie legala.
                 </ul>
             </p>
-
+    
             <h1>Detineti controlul asupra datelor dumneavoastra</h1>
             <p>
                 Puteti controla modul in care prelucram datele dumneavoastra cu caracter personal, exercitand oricare dintre urmatoarele drepturi/optiuni, oricand doriti.
@@ -1603,9 +1606,9 @@ if(isset($_POST['signOutput'])) {
                 <strong>Retragerea consimtamantului:&nbsp;</strong> in cazul in care v-ati dat consimtamantul, in mod expres, pentru o prelucrare de date, il veti putea retrage oricand. Aceasta retragere se va inregistra in
                 sistemele 07INTERNET fara intarzieri nejustificate.
             </p>
-
+    
             <br>
-
+    
             <h1>Suntem aici pentru dumneavoastra</h1>
             <p>
                 Compania care va prelucreaza datele este URBAN NETWORK SOLUTIONS S.R.L. denumita si 07INTERNET.
@@ -1616,18 +1619,16 @@ if(isset($_POST['signOutput'])) {
                 <br>
                 <strong>Autoritatea de Supraveghere:&nbsp;</strong> De asemenea, puteti sa inaintati o plangere in fata Autoritatii Nationale de Supraveghere a Prelucrarii Datelor cu Caracter Personal (http://www.dataprotection.ro/)
             </p>
-
+    
             <br>
-
+    
             <h1>Actualizari viitoare</h1>
             <p>
                 Continutul acestei Informari poate suferi modificari ca urmare a evolutiei pietei sau actualizarii gamei de servicii pe care le prestam. Vom publica orice noua versiune a acestei Informari pe
                 website-ul 07INTERNET si va vom anunta in avans, in timp util, cu privire  la orice schimbare ce ar putea afecta serviciile la care v-ati abonat.
             </p>
         </div>
-    </body>
-    ';
-
+    </body>';
     $PDF -> loadHtml($HTML);
 
     // Set page and orientation.
@@ -1759,7 +1760,7 @@ if(isset($_POST['signOutput'])) {
 
 <?php
 
-if(in_array("0", $client['attributes'][0])) {
+if(in_array("0", $client['attributes'][18])) {
 ?>
 
 <!DOCTYPE HTML>

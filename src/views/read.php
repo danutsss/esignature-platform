@@ -116,17 +116,6 @@ foreach($services as $service) {
             'zipCode' => $serviceZIP,
         ]
     );
-
-    // Formatting dates into DD-MM-YYYY
-    if($responseS['activeFrom']) {
-        $responseS['activeFrom'] = new \DateTimeImmutable($responseS['activeFrom']);
-        $responseS['activeFrom'] = $responseS['activeFrom'] -> format('d-m-Y');
-    }
-
-    if($responseS['activeTo']) {
-        $responseS['activeTo'] = new \DateTimeImmutable($responseS['activeTo']);
-        $responseS['activeTo'] = $responseS['activeTo'] -> format('d-m-Y');
-    }
 }
 
 // Initialize Dompdf class
@@ -324,9 +313,9 @@ $HTML = '
 
                 <td>
                     <p>
-                        <strong>Serie C.I.:&nbsp;</strong>'.$client['attributes'][1]['value'].'
-                        <strong>Numar C.I.:&nbsp;</strong>'.$client['attributes'][2]['value'].' <br>
-                        <strong>Cod Numeric Personal:&nbsp;</strong>'.$client['attributes'][3]['value'].' <br>
+                        <strong>Serie C.I.:&nbsp;</strong>'.$client['attributes'][0]['value'].'
+                        <strong>Numar C.I.:&nbsp;</strong>'.$client['attributes'][1]['value'].' <br>
+                        <strong>Cod Numeric Personal:&nbsp;</strong>'.$client['attributes'][2]['value'].' <br>
                         <strong>Cod fiscal:&nbsp;</strong>'.$client['companyTaxId'].' <br>
                         <strong>Nr. reg. comert:&nbsp;</strong>'.$client['companyRegistrationNumber'].'
                     </p>
@@ -334,8 +323,8 @@ $HTML = '
 
                 <td>
                     <p>
-                        <strong>Emis de:&nbsp;</strong>'.$client['attributes'][4]['value'].'
-                        <strong>la data de:&nbsp;</strong>'.$client['attributes'][5]['value'].'
+                        <strong>Emis de:&nbsp;</strong>'.$client['attributes'][3]['value'].'
+                        <strong>la data de:&nbsp;</strong>'.$client['attributes'][4]['value'].'
                     </p>
                 </td>
 
@@ -382,35 +371,49 @@ $HTML = '
             </tr>
 
             <tr>
-                <td colspan = "2">
+                <td colspan = "2">';
+
+                foreach($services as $service) {
+
+                    
+                    // Formatting dates into DD-MM-YYYY
+                    if($service['activeFrom']) {
+                        $service['activeFrom'] = new \DateTimeImmutable($service['activeFrom']);
+                        $service['activeFrom'] = $service['activeFrom'] -> format('d-m-Y');
+                    }
+
+                    if($service['activeTo']) {
+                        $service['activeTo'] = new \DateTimeImmutable($service['activeTo']);
+                        $service['activeTo'] = $service['activeTo'] -> format('d-m-Y');
+                    }
+
+                    $HTML .= "
                     <ul>
                         <li>
                             <p>
-                                <strong>Denumire:&nbsp;</strong>'.$responseS['name'].'
+                                <strong>Denumire:&nbsp;</strong>" . $service['name'] . "
                             </p>
                         </li>
                         <li>
                             <p>
-                                <strong>Pret:&nbsp;</strong>'.$responseS['price'].' RON
+                                <strong>Pret:&nbsp;</strong>" . $service['price'] . "
                             </p>
                         </li>
                         <li>
                             <p>
-                                <strong>Activat la:&nbsp;</strong>'.$responseS['activeFrom'].'
+                                <strong>Activat la:&nbsp;</strong>" . $service['activeFrom'] . "
                             </p>
                         </li>
                         <li>
                             <p>
-                                <strong>Minim:&nbsp;</strong>'.$responseS['minimumContractLengthMonths'].' luni
+                                <strong>Adresa:&nbsp;</strong>".$service['street1']." ".$service['street2']."
+                                <strong>oras:&nbsp;</strong>" . $service['city'].", ".$service['zipCode']."
                             </p>
                         </li>
-                        <li>
-                            <p>
-                                <strong>Adresa:&nbsp;</strong>'.$responseS['street1'].', '.$responseS['street2'].',
-                                <strong>oras:&nbsp;</strong>'.$responseS['city'].', '.$responseS['zipCode'].'
-                            </p>
-                        </li>
-                    </ul>
+                    </ul>";
+                }
+
+$HTML .= '
                 </td>
             </tr>
 
@@ -439,6 +442,14 @@ $HTML = '
                 <th>
                     Perioada contractuala
                 </th>
+            </tr>
+
+            <tr>
+                <td colspan = "2">
+                    <p>
+                        Perioada contractuala este de minim 24 de luni.
+                    </p>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -1134,6 +1145,28 @@ $HTML = '
                     </td>
 
                     <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][6]['value'].'</p>
+                    </td>
+
+                    <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][9]['value'].'</p>
+                    </td>
+
+                    <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][12]['value'].'</p>
+                    </td>
+
+                    <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][15]['value'].'</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>2</p>
+                    </td>
+
+                    <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                         <p>'.$client['attributes'][7]['value'].'</p>
                     </td>
 
@@ -1152,7 +1185,7 @@ $HTML = '
 
                 <tr>
                     <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>2</p>
+                        <p>3</p>
                     </td>
 
                     <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
@@ -1171,33 +1204,11 @@ $HTML = '
                         <p>'.$client['attributes'][17]['value'].'</p>
                     </td>
                 </tr>
-
-                <tr>
-                    <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>3</p>
-                    </td>
-
-                    <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][9]['value'].'</p>
-                    </td>
-
-                    <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][12]['value'].'</p>
-                    </td>
-
-                    <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][15]['value'].'</p>
-                    </td>
-
-                    <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][18]['value'].'</p>
-                    </td>
-                </tr>
             </tbody>
         </table>
 
         <p>
-            In perfecta stare de functionare d-lui (d-nei)&nbsp;<strong>'.$fullName.'</strong>, reprezentant al firmei&nbsp;<strong>'.$client['organizationName'].'</strong>, cu locatia in&nbsp;<strong>'.$client['city'] . ', '. $client['street1'] . ', '. $client['street2'].'</strong>, sector / judet&nbsp;<strong>Constanta</strong>, legitimat cu C.I.&nbsp;<strong>'.$client['attributes'][1]['value'].''.$client['attributes'][2]['value'].', C.N.P.: '.$client['attributes'][3]['value'].'</strong>, MAC ADDRESS: '.$client['attributes'][6]['value'].'.
+            In perfecta stare de functionare d-lui (d-nei)&nbsp;<strong>'.$fullName.'</strong>, reprezentant al firmei&nbsp;<strong>'.$client['organizationName'].'</strong>, cu locatia in&nbsp;<strong>'.$client['city'] . ', '. $client['street1'] . ', '. $client['street2'].'</strong>, sector / judet&nbsp;<strong>Constanta</strong>, legitimat cu C.I.&nbsp;<strong>'.$client['attributes'][0]['value'].''.$client['attributes'][1]['value'].', C.N.P.: '.$client['attributes'][2]['value'].'</strong>, MAC ADDRESS: '.$client['attributes'][5]['value'].'.
         </p>
 
         <p>
@@ -1226,6 +1237,20 @@ $HTML = '
                     </td>
 
                     <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][6]['value'].'</p>
+                    </td>
+
+                    <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>'.$client['attributes'][12]['value'].'</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
+                        <p>2</p>
+                    </td>
+
+                    <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                         <p>'.$client['attributes'][7]['value'].'</p>
                     </td>
 
@@ -1236,7 +1261,7 @@ $HTML = '
 
                 <tr>
                     <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>2</p>
+                        <p>3</p>
                     </td>
 
                     <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
@@ -1245,20 +1270,6 @@ $HTML = '
 
                     <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
                         <p>'.$client['attributes'][14]['value'].'</p>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style = "width: 45.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>3</p>
-                    </td>
-
-                    <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][9]['value'].'</p>
-                    </td>
-
-                    <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][15]['value'].'</p>
                     </td>
                 </tr>
             </tbody>
@@ -1615,8 +1626,7 @@ $HTML = '
             website-ul 07INTERNET si va vom anunta in avans, in timp util, cu privire  la orice schimbare ce ar putea afecta serviciile la care v-ati abonat.
         </p>
     </div>
-</body>
-';
+</body>';
 
 // Mobile Detect
 $detect = new Mobile_Detect;
