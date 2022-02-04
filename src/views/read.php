@@ -19,104 +19,26 @@ if(!$user -> isClient) {
     \App\Http::forbidden();
 }
 
-// Client Information
+// API doRequest - Client, Client's Contacts and Services
 $clientId = $user -> clientId;
-$firstName = (isset($_GET['firstName']) ? $_GET['firstName'] : null);
-$lastName = (isset($_GET['lastName']) ? $_GET['lastName'] : null);
-$fullAddress = (isset($_GET['fullAddress']) ? $_GET['fullAddress'] : null);
-$compTaxID = (isset($_GET['companyTaxId']) ? $_GET['companyTaxId'] : null);
-$compRegNo = (isset($_GET['companyRegistrationNumber']) ? $_GET['companyRegistrationNumber'] : null);
-$city = (isset($_GET['city']) ? $_GET['city'] : null);
-$street1 = (isset($_GET['street1']) ? $_GET['street1'] : null);
-$street2 = (isset($_GET['street2']) ? $_GET['street2'] : null);
-$orgName = (isset($_GET['organizationName']) ? $_GET['organizationName'] : null);
-$clientType = (isset($_GET['clientType']) ? $_GET['clientType'] : null);
-$invoiceStreet1 = (isset($_GET['invoiceStreet1']) ? $_GET['invoiceStreet1'] : null);
-$invoiceStreet2 = (isset($_GET['invoiceStreet2']) ? $_GET['invoiceStreet2'] : null);
-$invoiceCity = (isset($_GET['invoiceCity']) ? $_GET['invoiceCity'] : null);
-$invoiceZIP = (isset($_GET['invoiceZipCode']) ? $_GET['invoiceZipCoide'] : null);
-$attributes = (isset($_GET['attributes']) ? $_GET['attributes'] : [
-    $attrName = (isset($_GET['name']) ? $_GET['name'] : null),
-    $attrKey = (isset($_GET['key']) ? $_GET['key'] : null),
-    $attrValue = (isset($_GET['value']) ? $_GET['value'] : null),
-]);
-
-// Client Contacts Information
-$email = (isset($_GET['email']) ? $_GET['email'] : null);
-$phone = (isset($_GET['phone']) ? $_GET['phone'] : null);
-$name = (isset($_GET['name']) ? $_GET['name'] : null);
-
-// Service Information
-$serviceId = (isset($_GET['id']) ? $_GET['id'] : null);
-$serviceName = (isset($_GET['name']) ? $_GET['name'] : null);
-$servicePrice = (isset($_GET['price']) ? $_GET['price'] : null);
-$activeFrom = (isset($_GET['activeFrom']) ?  $_GET['activeFrom'] : null);
-$activeTo = (isset($_GET['activeTo']) ? $_GET['activeTo'] : null);
-$serviceStreet1 = (isset($_GET['street1']) ? $_GET['street1'] : null);
-$serviceStreet2 = (isset($_GET['street2']) ? $_GET['street2'] : null);
-$serviceCity = (isset($_GET['city']) ? $_GET['city'] : null);
-$serviceZIP = (isset($_GET['zipCode']) ? $_GET['zipCode'] : null);
-
-// API doRequest - Client Information & Custom Attributes
-$client = UCRMAPIAccess::doRequest(sprintf('clients/%d', $clientId),
-    'GET',
-    [
-        'firstName' => $firstName,
-        'lastName' => $lastName,
-        'fullAddress' => $fullAddress,
-        'companyTaxId' => $compTaxID,
-        'companyRegistrationNumber' => $compRegNo,
-        'city' => $city,
-        'street1' => $street1,
-        'street2' => $street2,
-        'organizationName' => $orgName,
-        'invoiceStreet1' => $invoiceStreet1,
-        'invoiceStreet2' => $invoiceStreet2,
-        'invoiceCity' => $invoiceCity,
-        'invoiceZipCode' => $invoiceZIP,
-        'attributes' => [
-            'name' => $attrName,
-            'value' => $attrValue,
-            'key' => $attrKey,
-            'id' => $clientId
-        ]   
-    ]
-);
-
-// Defining client's full name
+$client = UCRMAPIAccess::doRequest(sprintf('clients/%d', $clientId)) ?: [];
 $fullName = $client['lastName'] . ' ' . $client['firstName'];
 
-// API doRequest - Client Contacts Information
 $contacts = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
-foreach($contacts as $contact) {
-    $responseC = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId),
-        'GET',
-        [
-           'email' => $email,
-           'phone' => $phone,
-           'name' => $name, 
-        ]
-    );
-}
+foreach($contacts as $contact):
+    $contact = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
+endforeach;
 
-// API doRequest - Client Services Information
 $services = UCRMAPIAccess::doRequest(sprintf('clients/services?clientId=%d', $clientId)) ?: [];
-foreach($services as $service) {
-    $responseS = UCRMAPIAccess::doRequest(sprintf('clients/services/%d', $service['id']),
-        'GET',
-        [
-            'id' => $serviceId,
-            'name' => $serviceName,
-            'price' => $servicePrice,
-            'activeFrom' => $activeFrom,
-            'activeTo' => $activeTo,
-            'street1' => $serviceStreet1,
-            'street2' => $serviceStreet2,
-            'city' => $serviceCity,
-            'zipCode' => $serviceZIP,
-        ]
-    );
-}
+foreach($services as $service):
+    $service = UCRMAPIAccess::doRequest(sprintf('clients/services/%d', $service['id'])) ?: [];
+endforeach;
+
+// Parse the attributes to an ID <=> value pairs:
+$attributeValuesById = [];
+foreach($client['attributes'] as $attribute):
+    $attributeValuesById[$attribute['customAttributeId']] = $attribute['value'];
+endforeach;
 
 // Initialize Dompdf class
 $PDF = new Dompdf();
@@ -135,30 +57,19 @@ $HTML = '
     <meta http-equiv = "Content-Type" content = "text/html; charset=utf-8"/>
     <style>
         @page {
-            margin: 0cm 0cm;
+            margin: 0 !important;
+            padding: 0 !important
         }
         
         body {
             margin-top: 1cm;
             margin-left: 1cm;
             margin-right: 1cm;
-            margin-bottom: 2cm;
+            margin-bottom: 1cm;
             position: relative;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-        }
-
-        footer {
-            position: fixed;
-            bottom: 0cm;
-            left: 0cm;
-            right: 0cm;
-            height: 2.5cm;
-            clear: both;
-
-            /** Extra personal styles **/
-            line-height: 1.5cm;
         }
 
         .wrapper {
@@ -238,7 +149,7 @@ $HTML = '
             </tbody>
         </table>
         <h1>
-            Contract de prestari servicii internet nr.:&nbsp;<strong>'.$clientId.'&nbsp;</strong>denumit si ANEXA A.
+            Contract de prestari servicii internet nr.:&nbsp;<strong>' . $clientId . '&nbsp;</strong>denumit si ANEXA A.
         </h1>
         <table class = "paragraph">
             <tbody>
@@ -253,7 +164,7 @@ $HTML = '
 
             <tr>
                 <td colspan = "2">
-                    <p>
+                    <p style = "text-align: center;">
                         URBAN NETWORK SOLUTIONS S.R.L, cu sediul in <strong>Navodari, str. Midiei nr. 6, jud. Constanta</strong>, J13/1022/2017,
                         <strong>CUI:</strong> 37374276, Unicredit Navodari, <strong>CONT:</strong> RO70 BACX 0000 0014 5390 8001, reprezentata de
                         <strong>Lazar Stefan</strong> in calitate de <strong>director general</strong>.
@@ -277,11 +188,18 @@ $HTML = '
             <tr>
                 <td colspan = "2">
                     <p>
-                        <strong>Nume:&nbsp;</strong>'.$fullName.', <br>
-                        <strong>domiciliat / cu sediul in:&nbsp;</strong>'.$client['fullAddress'].', <br>
-                        <strong>email:&nbsp;</strong>'.$contact['email'].', <br>
-                        <strong>persoana de contact:&nbsp;</strong>'.$contact['name'].', <br>
-                        <strong>numar de telefon:&nbsp;</strong>'.$contact['phone'].'
+                        <strong>Nume:&nbsp;</strong>' . $fullName . ', <br>
+                        <strong>domiciliat / cu sediul in:&nbsp;</strong>' . $client['fullAddress'] . '<br>';
+
+                    foreach($contacts as $contact):
+
+                        $HTML .= "
+                        <strong>email:&nbsp;</strong>" . $contact['email'] . "<br>
+                        <strong>persoana de contact:&nbsp;</strong>" .$contact['name'] . "<br>
+                        <strong> numar de telefon:&nbsp;</strong>" . $contact['phone'] . "";
+                    endforeach;
+
+                    $HTML .= '
                     </p>
                 </td>
             </tr>
@@ -313,18 +231,18 @@ $HTML = '
 
                 <td>
                     <p>
-                        <strong>Serie C.I.:&nbsp;</strong>'.$client['attributes'][0]['value'].'
-                        <strong>Numar C.I.:&nbsp;</strong>'.$client['attributes'][1]['value'].' <br>
-                        <strong>Cod Numeric Personal:&nbsp;</strong>'.$client['attributes'][2]['value'].' <br>
-                        <strong>Cod fiscal:&nbsp;</strong>'.$client['companyTaxId'].' <br>
-                        <strong>Nr. reg. comert:&nbsp;</strong>'.$client['companyRegistrationNumber'].'
+                        <strong>Serie C.I.:&nbsp;</strong>' . $attributeValuesById[20] . '
+                        <strong>Numar C.I.:&nbsp;</strong>' . $attributeValuesById[21] . ' <br>
+                        <strong>Cod Numeric Personal:&nbsp;</strong>' . $attributeValuesById[22] . ' <br>
+                        <strong>Cod fiscal:&nbsp;</strong>' . $client['companyTaxId'] . ' <br>
+                        <strong>Nr. reg. comert:&nbsp;</strong>' . $client['companyRegistrationNumber'] . '
                     </p>
                 </td>
 
                 <td>
                     <p>
-                        <strong>Emis de:&nbsp;</strong>'.$client['attributes'][3]['value'].'
-                        <strong>la data de:&nbsp;</strong>'.$client['attributes'][4]['value'].'
+                        <strong>Emis de:&nbsp;</strong>' . $attributeValuesById[23] . '
+                        <strong>la data de:&nbsp;</strong>' . $attributeValuesById[24] . '
                     </p>
                 </td>
 
@@ -342,15 +260,15 @@ $HTML = '
                 </td>
                 <td>
                     <p>
-                        <strong>Oras:&nbsp;</strong>'.$client['invoiceCity'].' <br>
+                        <strong>Oras:&nbsp;</strong>' . $client['invoiceCity'] . ' <br>
                         <strong>sector / judet:&nbsp;</strong>Constanta <br>
-                        <strong>Strada:&nbsp;</strong>'.$client['invoiceStreet1'] . ' '. $client['invoiceStreet2'].'
+                        <strong>Strada:&nbsp;</strong>' . $client['invoiceStreet1'] . ' ' .  $client['invoiceStreet2'] . '
                     </p>
                 </td>
 
                 <td>
                     <p>
-                        <strong>Telefon:&nbsp;</strong>'.$contact['phone'].' <br>
+                        <strong>Telefon:&nbsp;</strong>' . $contact['phone'] . ' <br>
                     </p>
                 </td>
 
@@ -373,9 +291,8 @@ $HTML = '
             <tr>
                 <td colspan = "2">';
 
-                foreach($services as $service) {
+                foreach($services as $service):
 
-                    
                     // Formatting dates into DD-MM-YYYY
                     if($service['activeFrom']) {
                         $service['activeFrom'] = new \DateTimeImmutable($service['activeFrom']);
@@ -396,7 +313,7 @@ $HTML = '
                         </li>
                         <li>
                             <p>
-                                <strong>Pret:&nbsp;</strong>" . $service['price'] . "
+                                <strong>Pret:&nbsp;</strong>" . $service['price'] . " RON
                             </p>
                         </li>
                         <li>
@@ -406,12 +323,15 @@ $HTML = '
                         </li>
                         <li>
                             <p>
+                                <strong>Viteze:&nbsp;</strong>" . $service['downloadSpeed'] . " Mbps (download) / " . $service['uploadSpeed'] ." Mbps (upload)
+                        <li>
+                            <p>
                                 <strong>Adresa:&nbsp;</strong>".$service['street1']." ".$service['street2']."
                                 <strong>oras:&nbsp;</strong>" . $service['city'].", ".$service['zipCode']."
                             </p>
                         </li>
                     </ul>";
-                }
+                endforeach;
 
 $HTML .= '
                 </td>
@@ -430,9 +350,107 @@ $HTML .= '
                     Obiectul contractului
                 </th>
             </tr>
-            </tbody>
-        </table>
+            <tr>
+                <td colspan = "2">';
 
+                foreach($services as $service):
+
+                    $serviceSurcharge = UCRMAPIAccess::doRequest(sprintf('clients/services/%d/service-surcharges', $service['id'])) ?: [];
+    
+                    $surchargeById = [];
+                    foreach($serviceSurcharge as $surcharge):
+                        $surchargeById[$surcharge['surchargeId']] = $surcharge['invoiceLabel'];
+                    endforeach;
+
+                    if($service['servicePlanId'] == 1) {
+
+                        $HTML .= "
+                            <center>
+                                <strong>Internet Extra - 50RON / luna</strong>
+                                <br>
+                                Viteza de 1000Mbps
+                                <br>
+                                OFERTA - 30% OFF - 35RON / luna
+                                <br>
+                                Necesita achizitia unui router WIFI.
+                                <br>
+                                Beneficii: trafic nelimitat, conectare gratuita, viteze simetrice, adrese de email
+                                personalizate gratuite, spatiu de stocare gratuit, WiFi gratuit in zonele acoperite,
+                                instalare in maxim 5 zile lucratoare
+                                <br>
+                                " . $surchargeById[1] . " - 5RON / luna
+                                <br><br>";
+                    }
+
+                    if($service['servicePlanId'] == 2) {
+
+                        $HTML .= "
+                            <center>
+                                <strong> Internet Standard - 25RON / luna </strong>
+                                <br>
+                                Viteza de 1000Mbps
+                                <br>
+                                Necesita achizitia unui router WIFI.
+                                <br>
+                                Beneficii: trafic nelimitat, conectare gratuita, viteze simetrice, adrese de email
+                                personalizate gratuite, spatiu de stocare gratuit, WiFi gratuit in zonele acoperite,
+                                instalare in maxim 5 zile lucratoare
+                                <br>
+                                " . $surchargeById[1] . " - 5RON / luna
+                                <br><br>";
+                    }
+
+                    if($service['servicePlanId'] == 3) {
+
+                        $HTML .= "
+                            <center>
+                                <strong>Televiziune extra - 75RON / luna </strong>
+                                <br>
+                                220 canale digitale / 50+ canale HD
+                                <br>
+                                extraoptiuni incluse: Filme + Sport + International
+                                <br>
+                                OFERTA - 53.3% OFF - 35RON / luna
+                                <br>
+                                Conectare gratuita
+                                <br>
+                                " . $surchargeById[2] . " - 5RON / luna
+                                <br><br>";
+                    }
+
+                    if($service['servicePlanId'] == 4) {
+
+                        $HTML .= "
+                            <center>
+                                <strong> Pachet Extra Combi - 75RON / luna </strong>
+                                <br>
+                                Internet Extra - 50RON | Televiziune Extra - 75RON
+                                <br>
+                                OFERTA - 40% OFF - 75RON / luna
+                                <br>
+                                Router WiFi in custodie pe durata contractului
+                                <br>
+                                Conectare gratuita
+                                <br>
+                                " . $surchargeById[2] . " - 5RON / luna
+                                <br><br>";
+                    }
+                endforeach;
+        
+            $HTML .= '
+                        <center>
+                            3 luni gratuite <b>pe an</b>.
+                            <br>
+                            Reducere pentru plata anticipata si integrala: 25% (9 luni + 3 gratuite).
+                            <br>
+                            Taxa suspendare - 125RON | Taxa reactivare - 125RON | Taxa conectare - 250RON
+                        </center>
+                    </td>
+                </tr>
+            </tbody>
+        </table>';
+
+        $HTML .= '
         <table class = "paragraph">
             <tbody>
             <tr>
@@ -444,13 +462,11 @@ $HTML .= '
                 </th>
             </tr>
 
-            <tr>
-                <td colspan = "2">
-                    <p>
-                        Perioada contractuala este de minim 24 de luni.
-                    </p>
-                </td>
-            </tr>
+                <tr>
+                    <td colspan = "2">
+                        <center>Perioada contractuala este de <strong>minim 24 de luni</strong></center>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
@@ -1005,7 +1021,7 @@ $HTML .= '
         </p>
 
         <h1>CONDITII GENERALE DE FURNIZARE A SERVICIILOR URBAN ("CONDITII GENERALE") - ANEXA A.1</h1>
-        <h3 style = "text-align: center;">LA CONTRACTUL NR.:&nbsp;'.$clientId.'</h3>
+        <h3 style = "text-align: center;">LA CONTRACTUL NR.:&nbsp;' . $clientId . '</h3>
         <h3 style = "text-align: center;">PREVEDERI SPECIFICE SERVICIULUI DE INTERNET SI TELEVIZIUNE</h3>
 
         <h3>1. Definitii - in cazul in care legea nu prevede altfel, termenii folositi vor avea urmatoarele defintii: </h3>
@@ -1107,7 +1123,7 @@ $HTML .= '
 
         <h1>ANEXA C.1 - PROCES VERBAL DE ACCEPTANTA SI PUNERE IN FUNCTIUNE</h1>
         <h1>ANEXA C.2 - PROCES VERBAL DE PREDARE - PRIMIRE CUSTODIE ECHIPAMENTE</h1>
-        <h5 class = "header__phone" style = "font-weight: bold;">CTR NR.:&nbsp;'.$clientId.'</h5>
+        <h5 class = "header__phone" style = "font-weight: bold;">CTR NR.:&nbsp;' . $clientId . '</h5>
 
         <p>
             ART. 1. - URBAN NETWORK SOLUTIONS S.R.L, cu sediul in <strong>Navodari, str. Midiei nr. 6, jud. Constanta</strong>, J13/1022/2017,
@@ -1145,19 +1161,19 @@ $HTML .= '
                     </td>
 
                     <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][6]['value'].'</p>
+                        <p>' . $attributeValuesById[26] . '</p>
                     </td>
 
                     <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][9]['value'].'</p>
+                        <p>' . $attributeValuesById[29] . '</p>
                     </td>
 
                     <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][12]['value'].'</p>
+                        <p>' . $attributeValuesById[32] . '</p>
                     </td>
 
                     <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][15]['value'].'</p>
+                        <p>' . $attributeValuesById[35] . '</p>
                     </td>
                 </tr>
 
@@ -1167,19 +1183,19 @@ $HTML .= '
                     </td>
 
                     <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][7]['value'].'</p>
+                        <p>' . $attributeValuesById[27] . '</p>
                     </td>
 
                     <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][10]['value'].'</p>
+                        <p>' . $attributeValuesById[30] . '</p>
                     </td>
 
                     <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][13]['value'].'</p>
+                        <p>' . $attributeValuesById[33] . '</p>
                     </td>
 
                     <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][16]['value'].'</p>
+                        <p>' . $attributeValuesById[36] . '</p>
                     </td>
                 </tr>
 
@@ -1189,26 +1205,26 @@ $HTML .= '
                     </td>
 
                     <td style = "width: 261.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][8]['value'].'</p>
+                        <p>' . $attributeValuesById[28] . '</p>
                     </td>
 
                     <td style = "width: 81.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][11]['value'].'</p>
+                        <p>' . $attributeValuesById[31] . '</p>
                     </td>
 
                     <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][14]['value'].'</p>
+                        <p>' . $attributeValuesById[34] . '</p>
                     </td>
 
                     <td style = "width: 53.6pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][17]['value'].'</p>
+                        <p>' . $attributeValuesById[37] . '</p>
                     </td>
                 </tr>
             </tbody>
         </table>
 
         <p>
-            In perfecta stare de functionare d-lui (d-nei)&nbsp;<strong>'.$fullName.'</strong>, reprezentant al firmei&nbsp;<strong>'.$client['organizationName'].'</strong>, cu locatia in&nbsp;<strong>'.$client['city'] . ', '. $client['street1'] . ', '. $client['street2'].'</strong>, sector / judet&nbsp;<strong>Constanta</strong>, legitimat cu C.I.&nbsp;<strong>'.$client['attributes'][0]['value'].''.$client['attributes'][1]['value'].', C.N.P.: '.$client['attributes'][2]['value'].'</strong>, MAC ADDRESS: '.$client['attributes'][5]['value'].'.
+            In perfecta stare de functionare d-lui (d-nei)&nbsp;<strong>' . $fullName . '</strong>, reprezentant al firmei&nbsp;<strong>' . $client['organizationName'] . '</strong>, cu locatia in&nbsp;<strong>' . $client['city'] . ', ' .  $client['street1'] . ', ' .  $client['street2'] . '</strong>, sector / judet&nbsp;<strong>Constanta</strong>, legitimat cu C.I.&nbsp;<strong>' . $attributeValuesById[20] . '' . $attributeValuesById[21] . ', C.N.P.: ' . $attributeValuesById[22] . '</strong>, MAC ADDRESS: ' . $attributeValuesById[25] . ' . 
         </p>
 
         <p>
@@ -1237,11 +1253,11 @@ $HTML .= '
                     </td>
 
                     <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][6]['value'].'</p>
+                        <p>' . $attributeValuesById[26] . '</p>
                     </td>
 
                     <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][12]['value'].'</p>
+                        <p>' . $attributeValuesById[32] . '</p>
                     </td>
                 </tr>
 
@@ -1251,11 +1267,11 @@ $HTML .= '
                     </td>
 
                     <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][7]['value'].'</p>
+                        <p>' . $attributeValuesById[27] . '</p>
                     </td>
 
                     <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][13]['value'].'</p>
+                        <p>' . $attributeValuesById[33] . '</p>
                     </td>
                 </tr>
 
@@ -1265,11 +1281,11 @@ $HTML .= '
                     </td>
 
                     <td style = "width: 396.0pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][8]['value'].'</p>
+                        <p>' . $attributeValuesById[28] . '</p>
                     </td>
 
                     <td style = "width: 60.3pt; border: solid windowtext 1.0pt; padding: 0cm 5.4pt 0cm 5.4pt;">
-                        <p>'.$client['attributes'][14]['value'].'</p>
+                        <p>' . $attributeValuesById[34] . '</p>
                     </td>
                 </tr>
             </tbody>
@@ -1280,7 +1296,7 @@ $HTML .= '
         </p>
 
         <h3 style = "text-align: center;">URBAN NETWORK SOLUTIONS S.R.L.</h3>
-        <h3 style = "text-align: center;">ANEXA C.3 la Contract de prestari servicii internet nr.:&nbsp;<strong>'.$clientId.'&nbsp;</strong>.</h1>
+        <h3 style = "text-align: center;">ANEXA C.3 la Contract de prestari servicii internet nr.:&nbsp;<strong>' . $clientId . '&nbsp;</strong>.</h1>
         <h1>Informare cu privire la prelucrarea datelor cu caracter personal</h1>
         <p>
             Prelucram date cu caracter personal atunci cand folositi serviciile 07INTERNET, iar modul in care facem acestlucru este prevazut in aceasta Informare.
@@ -1633,7 +1649,7 @@ $detect = new Mobile_Detect;
 $PDF -> loadHtml($HTML);
 
 // Set the page size and orientation.
-$PDF -> setPaper('A4', 'portrait');
+$PDF -> setPaper('A4', 'landscape');
 
 // Render the HTML as PDF.
 $PDF -> render();
@@ -1642,11 +1658,11 @@ $PDF -> render();
 // Output the generated PDF to phone and browser (1 = Download, 0 = Preview).
 // If phone is detected, the file must be downloaded.
 if($detect -> isMobile() || $detect -> isTablet()) {
-    $PDF -> stream("Contract 07INTERNET - '$fullName'.pdf", [
+    $PDF -> stream("Contract 07INTERNET - '$fullName' . pdf", [
         "Attachment" => true
     ]);
 } else {
-    $PDF -> stream("Contract 07INTERNET - '$fullName'.pdf", [
+    $PDF -> stream("Contract 07INTERNET - '$fullName' . pdf", [
         "Attachment" => false
     ]);
 }
