@@ -1799,46 +1799,76 @@ if(isset($_POST['signOutput'])) {
 
 if($attributeValuesById[39] == 0) {
 ?>
-
 <!DOCTYPE HTML>
 <html lang = "EN">
     <head>
-        <meta charset = "UTF-8">
-        <meta http-equiv = "X-UA-Compatible" content = "IE = Edge">
-        <meta name = "viewport" content = "width = device - width, initial-scale = 1">
-    
-        <style>
-            <?php include __DIR__ . '/assets/jquery.signaturepad.css' ?>
-        </style>
+        <meta charset = "UTF-8" />
+        <meta name = "viewport" content = "width = device-width, initial-scale = 1, shrink-to-fit = yes" />
 
+        <title>Semneaza contract</title>
+        
+        <script src="https://kit.fontawesome.com/d22129114a.js" crossorigin="anonymous"></script>
         <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+        <style>
+            <?php include __DIR__ . '/assets/style.css' ?>
+        </style>
     </head>
 
     <body>
-        <form method = "POST" class = "sigPad">
-            <label for = "name">Introdu numele in casuta de mai jos:</label>
-            <input texxt = "text" name = "name" id = "name" class = "name">
+        <div class = "sigForm">
+            <form method = "POST" class = "sigPad">
+                <label for = "name">Introdu numele mai jos:</label>
+                <input text = "text" name = "name" id = "name" class = "name">
+    
+                <ul class = "sigNav">
+                    <li class = "typeIt">
+                        <a href = "#type-it">
+                            <i class="fas fa-pen-alt"></i>
+                        </a>
+                    </li>
 
-            <p class = "typeItDesc">Vezi semnatura</p>
-            <p class = "drawItDesc">Semneaza</p>
+                    <li class = "drawIt">
+                        <a href = "#draw-it" class = "current">
+                            <i class="fas fa-paint-brush"></i>
+                        </a>
+                    </li>
 
-            <ul class = "sigNav">
-                <li class = "typeIt"><a href = "#type-it">Scrie</a></li>
-                <li class = "drawIt"><a href = "#draw-it" clsas = "current">Deseneaza</a></li>
-                <li class = "drawButton"><a href = "#clear">Sterge</a></li>
-            </ul>
+                    <li class = "clearButton">
+                        <a href = "#clear">
+                            <i class="fas fa-eraser"></i>
+                        </a>
+                    </li>
+                </ul>
+    
+                <div class = "sig sigWrapper">
+                    <div class = "typed"></div>
+                    <canvas class = "pad" width = "250" height = "100"></canvas>
+    
+                    <input type = "hidden" name = "signOutput" class = "signOutput" />
+                </div>
+    
+                <button type = "submit">
+                    Sunt de acord cu termenii si conditiile!
+                </button>
+            </form>
 
-            <div class = "sig sigWrapper">
-                <div class = "typed"></div>
-                <canvas class = "pad" width = "250" height = "100"></canvas>
-
-                <input type = "hidden" name = "signOutput" class = "signOutput" />
+            <div class = "rightForm">
+                <div class = "contractInfo">
+                    <p style = "text-align: center;">
+                        Inainte de a semna contractul, va rugam sa il cititi cu foarte mare atentie. 
+                        <br>
+                        <br>
+                        Dupa ce ati semnat, un tichet va fi automat deschis si va contine contractul cu semnatura dvs. 
+                        atasata pe fiecare pagina a acestuia.
+                        <br>
+                        <br>
+                        De asemenea, pe adresa de e-mail asociata contului dvs. de client, 
+                        veti primi un mesaj ce va contine contractul semnat (verificati toate folderele, inclusiv SPAM).
+                    </p>
+                </div>
             </div>
-
-            <button type = "submit">
-                Sunt de acord cu termenii si conditiile!
-            </button>
-        </form>
+        </div>
 
         <script>
             <?php include __DIR__ . '/assets/jquery.signaturepad.js' ?>
