@@ -14,8 +14,8 @@ If you want to edit the content of the contract for both options (read & sign), 
 
 * Configure the contract content from the plugin's configuration page.
 
-## Plugin images
+## Images
 
-### [center]Plugin's sign page[/center]
+### Sign form & pad design
 
 ![Plugin's Signature Form Design](https://i.imgur.com/QSyabu5.png)
