@@ -16,5 +16,6 @@ If you want to edit the content of the contract for both options (read & sign), 
 
 ## Plugin images
 
-* Plugin's sign page
+### Plugin's sign page
+
 ![Plugin's Signature Form Design](https://i.imgur.com/QSyabu5.png)
