@@ -57,46 +57,51 @@ body, html {
     color: #fff;
 }
 
-.sigForm {
-    position: relative;
+/*
+    .sigForm {
+        position: relative;
+        
+        width: 720px;
+        height: 800px;
+
+        margin: 0 auto 1.42857rem;
     
-    width: 720px;
-    height: 800px;
+        background: #FFF;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+        border-radius: 35px;
+    }
+*/
 
-    margin: 0 auto 1.42857rem;
-  
-    background: #FFF;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
-    border-radius: 35px;
-}
+/*
+    .rightForm {
+        position: absolute;
 
-.rightForm {
-    position: absolute;
+        width: 360px;
+        height: 800px;
 
-    width: 360px;
-    height: 800px;
+        left: 360px;
 
-    left: 360px;
+        background: linear-gradient(204.99deg, #6BCFF6 -1.27%, #A5A6F6 113.45%);
+        border-radius: 0px 35px 35px 0px;
+    }
 
-    background: linear-gradient(204.99deg, #6BCFF6 -1.27%, #A5A6F6 113.45%);
-    border-radius: 0px 35px 35px 0px;
-}
+    .contractInfo {
+        position: absolute;
+        
+        top: 35%;
+        left: 0%;
 
-.contractInfo {
-    position: absolute;
-    
-    top: 35%;
-    left: 0%;
-
-    text-shadow: 1px 1px #000;
-}
+        text-shadow: 1px 1px #000;
+    }
+*/
 
 .sigPad {
-    position: absolute;
+    position: relative;
     width: 275px;
     height: 400px;
-    left: 42px;
     top: 200px;
+
+    margin: 0 auto;
     
     border: 1px dashed #A5A6F6;
     box-sizing: border-box;

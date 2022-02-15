@@ -1816,7 +1816,7 @@ if($attributeValuesById[39] == 0) {
     </head>
 
     <body>
-        <div class = "sigForm">
+        <!-- <div class = "sigForm"> -->
             <form method = "POST" class = "sigPad">
                 <label for = "name">Introdu numele mai jos:</label>
                 <input text = "text" name = "name" id = "name" class = "name">
@@ -1853,6 +1853,7 @@ if($attributeValuesById[39] == 0) {
                 </button>
             </form>
 
+            <!--          
             <div class = "rightForm">
                 <div class = "contractInfo">
                     <p style = "text-align: center;">
@@ -1868,7 +1869,8 @@ if($attributeValuesById[39] == 0) {
                     </p>
                 </div>
             </div>
-        </div>
+            -->
+        <!-- </div> -->
 
         <script>
             <?php include __DIR__ . '/assets/jquery.signaturepad.js' ?>
