@@ -4,8 +4,6 @@ ob_start();
 error_reporting(E_ALL);
 
 // references to Ubnt, Dompdf, ...
-use Ubnt\UcrmPluginSdk\Data\UcrmUser;
-use Ubnt\UcrmPluginSdk\Service\UcrmApi;
 use Ubnt\UcrmPluginSdk\Service\UcrmSecurity;
 
 use Dompdf\Dompdf;
@@ -29,9 +27,6 @@ $client = UCRMAPIAccess::doRequest(sprintf('clients/%d', $clientId)) ?: [];
 $fullName = $client['lastName'] . ' ' . $client['firstName'];
 
 $contacts = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
-foreach($contacts as $contact):
-    $contact = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
-endforeach;
 
 $services = UCRMAPIAccess::doRequest(sprintf('clients/services?clientId=%d', $clientId)) ?: [];
 foreach($services as $service):
@@ -382,6 +377,7 @@ if(isset($_POST['signOutput'])) {
                         $surchargeById = [];
                         foreach($serviceSurcharge as $surcharge):
                             $surchargeById[$surcharge['surchargeId']] = $surcharge['invoiceLabel'];
+                            $surchargePrice[$surcharge['surchargeId']] = $surcharge['price'];
                         endforeach;
     
                         if($service['servicePlanId'] == 1) {
@@ -400,7 +396,7 @@ if(isset($_POST['signOutput'])) {
                                     personalizate gratuite, spatiu de stocare gratuit, WiFi gratuit in zonele acoperite,
                                     instalare in maxim 5 zile lucratoare
                                     <br>
-                                    " . $surchargeById[1] . " - 5RON / luna
+                                    <strong>" . $surchargeById[1] . " - " . $surchargePrice[1] . "RON / luna</strong>
                                     <br><br>";
                         }
     
@@ -418,7 +414,7 @@ if(isset($_POST['signOutput'])) {
                                     personalizate gratuite, spatiu de stocare gratuit, WiFi gratuit in zonele acoperite,
                                     instalare in maxim 5 zile lucratoare
                                     <br>
-                                    " . $surchargeById[1] . " - 5RON / luna
+                                    <strong>" . $surchargeById[1] . " - " . $surchargePrice[1] . "RON / luna</strong>
                                     <br><br>";
                         }
     
@@ -436,7 +432,7 @@ if(isset($_POST['signOutput'])) {
                                     <br>
                                     Conectare gratuita
                                     <br>
-                                    " . $surchargeById[2] . " - 5RON / luna
+                                    <strong>" . $surchargeById[2] . " - " . $surchargePrice[2] . "RON / luna</strong>
                                     <br><br>";
                         }
     
@@ -444,7 +440,7 @@ if(isset($_POST['signOutput'])) {
     
                             $HTML .= "
                                 <center>
-                                    <strong> Pachet Extra Combi - 75RON / luna </strong>
+                                    <strong> Pachet Internet Extra + TV 1 an - 75RON / luna </strong>
                                     <br>
                                     Internet Extra - 50RON | Televiziune Extra - 75RON
                                     <br>
@@ -454,17 +450,17 @@ if(isset($_POST['signOutput'])) {
                                     <br>
                                     Conectare gratuita
                                     <br>
-                                    " . $surchargeById[2] . " - 5RON / luna
+                                    <strong>" . $surchargeById[2] . " - " . $surchargePrice[2] . "RON / luna</strong>
+                                    <br>
+                                    3 luni gratuite <b>pe an</b>.
+                                    <br>
+                                    Reducere pentru plata anticipata si integrala: 25% (9 luni + 3 gratuite).
                                     <br><br>";
                         }
                     endforeach;
             
                 $HTML .= '
                             <center>
-                                3 luni gratuite <b>pe an</b>.
-                                <br>
-                                Reducere pentru plata anticipata si integrala: 25% (9 luni + 3 gratuite).
-                                <br>
                                 Taxa suspendare - 125RON | Taxa reactivare - 125RON | Taxa conectare - 250RON
                             </center>
                         </td>
@@ -1669,7 +1665,7 @@ if(isset($_POST['signOutput'])) {
     $PDF -> loadHtml($HTML);
 
     // Set page and orientation.
-    $PDF -> setPaper('A4', 'landscape');
+    $PDF -> setPaper('A3', 'portrait');
 
     // Render the HTML as PDF.
     $PDF -> render();

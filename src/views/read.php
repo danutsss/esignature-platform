@@ -1,11 +1,9 @@
 <?php
 
 ob_start();
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL);
 
 //references to Ubnt, Dompdf, ...
-use Ubnt\UcrmPluginSdk\Data\UcrmUser;
-use Ubnt\UcrmPluginSdk\Service\UcrmApi;
 use Ubnt\UcrmPluginSdk\Service\UcrmSecurity;
 
 use Dompdf\Dompdf;
@@ -25,9 +23,6 @@ $client = UCRMAPIAccess::doRequest(sprintf('clients/%d', $clientId)) ?: [];
 $fullName = $client['lastName'] . ' ' . $client['firstName'];
 
 $contacts = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
-foreach($contacts as $contact):
-    $contact = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
-endforeach;
 
 $services = UCRMAPIAccess::doRequest(sprintf('clients/services?clientId=%d', $clientId)) ?: [];
 foreach($services as $service):
@@ -53,9 +48,16 @@ $PDF -> setOptions($PDFOptions);
 header('Content-Type: application/pdf');
 
 $HTML = '
+<html>
 <head>
     <meta http-equiv = "Content-Type" content = "text/html; charset=utf-8"/>
     <style>
+
+        html {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
         @page {
             margin: 0 !important;
             padding: 0 !important
@@ -70,6 +72,8 @@ $HTML = '
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            height: 100%;
+            padding: 0;
         }
 
         .wrapper {
@@ -114,7 +118,7 @@ $HTML = '
         
         table {
             width: 100%;
-        }  
+        }
         
         .paragraph th {
             color: #FFF;
@@ -130,7 +134,7 @@ $HTML = '
     </style>
 </head>
 <body>
-    <div class = "wrapper">
+    <div class = "wrapper" style = "page-break-inside: avoid;">
         <table>
             <tbody>
             <tr>
@@ -196,7 +200,7 @@ $HTML = '
                         $HTML .= "
                         <strong>email:&nbsp;</strong>" . $contact['email'] . "<br>
                         <strong>persoana de contact:&nbsp;</strong>" .$contact['name'] . "<br>
-                        <strong> numar de telefon:&nbsp;</strong>" . $contact['phone'] . "";
+                        <strong>numar de telefon:&nbsp;</strong>" . $contact['phone'] . "<br>";
                     endforeach;
 
                     $HTML .= '
@@ -360,10 +364,11 @@ $HTML .= '
                     $surchargeById = [];
                     foreach($serviceSurcharge as $surcharge):
                         $surchargeById[$surcharge['surchargeId']] = $surcharge['invoiceLabel'];
+                        $surchargePrice[$surcharge['surchargeId']] = $surcharge['price'];
                     endforeach;
 
                     if($service['servicePlanId'] == 1) {
-
+    
                         $HTML .= "
                             <center>
                                 <strong>Internet Extra - 50RON / luna</strong>
@@ -378,7 +383,7 @@ $HTML .= '
                                 personalizate gratuite, spatiu de stocare gratuit, WiFi gratuit in zonele acoperite,
                                 instalare in maxim 5 zile lucratoare
                                 <br>
-                                " . $surchargeById[1] . " - 5RON / luna
+                                <strong>" . $surchargeById[1] . " - " . $surchargePrice[1] . "RON / luna</strong>
                                 <br><br>";
                     }
 
@@ -396,7 +401,7 @@ $HTML .= '
                                 personalizate gratuite, spatiu de stocare gratuit, WiFi gratuit in zonele acoperite,
                                 instalare in maxim 5 zile lucratoare
                                 <br>
-                                " . $surchargeById[1] . " - 5RON / luna
+                                <strong>" . $surchargeById[1] . " - " . $surchargePrice[1] . "RON / luna</strong>
                                 <br><br>";
                     }
 
@@ -414,7 +419,7 @@ $HTML .= '
                                 <br>
                                 Conectare gratuita
                                 <br>
-                                " . $surchargeById[2] . " - 5RON / luna
+                                <strong>" . $surchargeById[2] . " - " . $surchargePrice[2] . "RON / luna</strong>
                                 <br><br>";
                     }
 
@@ -422,7 +427,7 @@ $HTML .= '
 
                         $HTML .= "
                             <center>
-                                <strong> Pachet Extra Combi - 75RON / luna </strong>
+                                <strong> Pachet Internet Extra + TV 1 an - 75RON / luna </strong>
                                 <br>
                                 Internet Extra - 50RON | Televiziune Extra - 75RON
                                 <br>
@@ -432,17 +437,17 @@ $HTML .= '
                                 <br>
                                 Conectare gratuita
                                 <br>
-                                " . $surchargeById[2] . " - 5RON / luna
+                                <strong>" . $surchargeById[2] . " - " . $surchargePrice[2] . "RON / luna</strong>
+                                <br>
+                                3 luni gratuite <b>pe an</b>.
+                                <br>
+                                Reducere pentru plata anticipata si integrala: 25% (9 luni + 3 gratuite).
                                 <br><br>";
                     }
                 endforeach;
         
             $HTML .= '
                         <center>
-                            3 luni gratuite <b>pe an</b>.
-                            <br>
-                            Reducere pentru plata anticipata si integrala: 25% (9 luni + 3 gratuite).
-                            <br>
                             Taxa suspendare - 125RON | Taxa reactivare - 125RON | Taxa conectare - 250RON
                         </center>
                     </td>
@@ -1641,15 +1646,14 @@ $HTML .= '
             Continutul acestei Informari poate suferi modificari ca urmare a evolutiei pietei sau actualizarii gamei de servicii pe care le prestam. Vom publica orice noua versiune a acestei Informari pe
             website-ul 07INTERNET si va vom anunta in avans, in timp util, cu privire  la orice schimbare ce ar putea afecta serviciile la care v-ati abonat.
         </p>
-    </div>
-</body>';
+</div></body></html>';
 
 // Mobile Detect
 $detect = new Mobile_Detect;
 $PDF -> loadHtml($HTML);
 
 // Set the page size and orientation.
-$PDF -> setPaper('A4', 'landscape');
+$PDF -> setPaper('A3', 'portrait');
 
 // Render the HTML as PDF.
 $PDF -> render();

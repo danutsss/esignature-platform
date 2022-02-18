@@ -886,8 +886,8 @@
     , currentClass : 'current' // The class used to mark items as being currently active
     , validateFields : true // Whether the name, draw fields should be validated
     , errorClass : 'error' // The class applied to the new error Html element
-    , errorMessage : 'Te rugam introdu numele tau in casuta de mai jos!' // The error message displayed on invalid submission
-    , errorMessageDraw : 'Te rugam semneaza documentul!' // The error message displayed when drawOnly and no signature is drawn
+    //, errorMessage : 'Te rugam introdu numele tau in casuta de mai jos!' // The error message displayed on invalid submission
+    //, errorMessageDraw : 'Te rugam semneaza documentul!' // The error message displayed when drawOnly and no signature is drawn
     , onBeforeValidate : null // Pass a callback to be used instead of the built-in function
     , onFormError : null // Pass a callback to be used instead of the built-in function
     , onDraw : null // Pass a callback to be used to capture the drawing process
