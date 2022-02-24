@@ -18,6 +18,7 @@
         "php": ">=7.1",
         "ubnt/ucrm-plugin-sdk": "~0.5",
         "dompdf/dompdf": "^1.0",
-        "mobiledetect/mobiledetectlib": "^2.8"
+        "mobiledetect/mobiledetectlib": "^2.8",
+        "picqer/php-barcode-generator": "^2.2"
     }
 }

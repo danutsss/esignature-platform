@@ -6,7 +6,6 @@ class UCRMAPIAccess {
     const API_URL = 'https://uisp.07internet.ro/api/v1.0';
     const API_KEY = 'HS9hdWcdsV34MXGy/VKKloywDwZeVORNGAfZlHQNQM2sAQM03bSPOodm/9eQ1qpH';
 
-
     /**
      * @param string $url
      * @param string $method

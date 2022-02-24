@@ -76,6 +76,18 @@ $HTML = '
             padding: 0;
         }
 
+        footer {
+            position: fixed;
+            bottom: 0cm;
+            left: 0cm;
+            right: 0cm;
+            height: 2.5cm;
+            clear: both;
+
+            /** Extra personal styles **/
+            line-height: 1.5cm;
+        }
+
         .wrapper {
             font-size: 13px;
             line-height: 1.4;
