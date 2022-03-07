@@ -13,4 +13,3 @@ If you want to edit the content of the contract for both options (read & sign), 
 ## Future updates
 
 * Configure the contract content from the plugin's configuration page.
-* 
