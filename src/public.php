@@ -3,7 +3,6 @@
 declare(strict_types = 1);
 
 // references to Ubnt, ...
-use Ubnt\UcrmPluginSdk\Data\UcrmUser;
 use Ubnt\UcrmPluginSdk\Service\UcrmSecurity;
 use Ubnt\UcrmPluginSdk\Service\UcrmOptionsManager;
 
@@ -17,25 +16,10 @@ require_once __DIR__ . '/main.php';
 $security = UcrmSecurity::create();
 $user = $security -> getUser();
 
-/* Check if user is client, if not send an error message.
+// Check if user is client, if not send an error message.
 if(!$user -> isClient) {
     App\Http::forbidden();
 }
-*/
-
-// barCode
-$generator = new Picqer\Barcode\BarcodeGeneratorPNG();
-
-if(!isset($_GET['barcode']))
-    echo "Barcode information is not provided.";
-
-$barCodeText = $_GET['barcode'];
-$barCode = $generator -> getBarcode($barCodeText, $generator::TYPE_CODE_128);
-
-header('Content-Type: image/png');
-
-echo $barCode;
-
 
 // Render form
 $optionsManager = UcrmOptionsManager::create();
