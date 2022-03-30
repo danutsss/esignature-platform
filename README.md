@@ -4,18 +4,12 @@
 
 This plugin handles 2 options: read & sign a digital contract. The information from the contract is pulled from the UCRM Platform through API.
 
-Using Mobile Detect Library I managed to check if the client is using a phone or a tablet and if they are, the contract will automatically download, because I saw that the PDF Viewer is not loading properly when using a phone.
+Using Mobile Detect Library I managed to check if the client is using a phone or a tablet and if they are, the contract will automatically download, because the PDF Viewer is not loading properly on phone / tablets.
 
 ## Configuration
 
-If you want to edit the content of the contract for both options (read & sign), you will need to open `read.php` & `sign.php` and modify the `$HTML` variable.
+At the moment, the plugin's content is hardcoded into `read.php` & `sign.php`. If you want to use the plugin and put your own content, open `read.php` & `sign.php` and edit the `$HTML`  variable.
 
 ## Future updates
 
 * Configure the contract content from the plugin's configuration page.
-
-## Images
-
-### Sign form & pad design
-
-![Plugin's Signature Form Design](https://i.imgur.com/QSyabu5.png)
