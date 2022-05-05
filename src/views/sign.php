@@ -12,44 +12,44 @@ use Dompdf\Options;
 
 // Ensure that user is logged in and has permission to sign the contract.
 $security = UcrmSecurity::create();
-$user = $security -> getUser();
+$user = $security->getUser();
 
-if(!$user -> isClient) {
+if (!$user->isClient) {
     \App\Http::forbidden();
 }
 
 // Client Information
-$clientId = $user -> clientId;
+$clientId = $user->clientId;
 
 // API doRequest - Client, Client's Contacts and Services
-$clientId = $user -> clientId;
+$clientId = $user->clientId;
 $client = UCRMAPIAccess::doRequest(sprintf('clients/%d', $clientId)) ?: [];
 $fullName = $client['lastName'] . ' ' . $client['firstName'];
 
 $contacts = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
 
 $services = UCRMAPIAccess::doRequest(sprintf('clients/services?clientId=%d', $clientId)) ?: [];
-foreach($services as $service):
+foreach ($services as $service) :
     $service = UCRMAPIAccess::doRequest(sprintf('clients/services/%d', $service['id'])) ?: [];
 endforeach;
 
 // Parse the attributes to an ID <=> value pairs:
 $attributeValuesById = [];
-foreach($client['attributes'] as $attribute):
+foreach ($client['attributes'] as $attribute) :
     $attributeValuesById[$attribute['customAttributeId']] = $attribute['value'];
 endforeach;
 
-if(isset($_POST['signOutput'])) {
+if (isset($_POST['signOutput'])) {
     $sign_output = $_POST['signOutput'];
 
     // Initialize Dompdf class
     $PDF = new Dompdf();
-    $PDFOptions = $PDF -> getOptions();
-    $PDFOptions -> set([
+    $PDFOptions = $PDF->getOptions();
+    $PDFOptions->set([
         'isRemoteEnabled' => true,
         'isHtml5ParserEnabled' => true
     ]);
-    $PDF -> setOptions($PDFOptions);
+    $PDF->setOptions($PDFOptions);
 
     // Header
     header('Content-Type: application/pdf');
@@ -135,6 +135,7 @@ if(isset($_POST['signOutput'])) {
                 background: #7D7B7B;
                 text-align: left;
                 padding: 0 8px;
+                width: 100%;
             }
             
             .paragraph th:first-child {
@@ -145,7 +146,7 @@ if(isset($_POST['signOutput'])) {
     </head>
     <body>
         <footer>
-            <img style = "margin-left: 750px;" src = "'.$sign_output.'">
+            <img style = "margin-left: 750px;" src = "' . $sign_output . '">
         </footer>
         <div class = "wrapper">
             <table>
@@ -180,7 +181,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
     
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "3">
                         <p style = "text-align: center;">
                             URBAN NETWORK SOLUTIONS S.R.L, cu sediul in <strong>Navodari, str. Midiei nr. 6, jud. Constanta</strong>, J13/1022/2017,
                             <strong>CUI:</strong> 37374276, Unicredit Navodari, <strong>CONT:</strong> RO70 BACX 0000 0014 5390 8001, reprezentata de
@@ -203,26 +204,26 @@ if(isset($_POST['signOutput'])) {
                 </tr>
     
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "3">
                         <p>
                             <strong>Nume:&nbsp;</strong>' . $fullName . ', <br>
                             <strong>domiciliat / cu sediul in:&nbsp;</strong>' . $client['fullAddress'] . '<br>';
-    
-                        foreach($contacts as $contact):
-    
-                            $HTML .= "
+
+    foreach ($contacts as $contact) :
+
+        $HTML .= "
                             <strong>email:&nbsp;</strong>" . $contact['email'] . "<br>
-                            <strong>persoana de contact:&nbsp;</strong>" .$contact['name'] . "<br>
+                            <strong>persoana de contact:&nbsp;</strong>" . $contact['name'] . "<br>
                             <strong> numar de telefon:&nbsp;</strong>" . $contact['phone'] . "";
-                        endforeach;
-    
-                        $HTML .= '
+    endforeach;
+
+    $HTML .= '
                         </p>
                     </td>
                 </tr>
     
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "3">
                         <p>
                             <strong>
                                 <u>
@@ -306,22 +307,22 @@ if(isset($_POST['signOutput'])) {
                 </tr>
     
                 <tr>
-                    <td colspan = "2">';
-    
-                    foreach($services as $service):
-    
-                        // Formatting dates into DD-MM-YYYY
-                        if($service['activeFrom']) {
-                            $service['activeFrom'] = new \DateTimeImmutable($service['activeFrom']);
-                            $service['activeFrom'] = $service['activeFrom'] -> format('d-m-Y');
-                        }
-    
-                        if($service['activeTo']) {
-                            $service['activeTo'] = new \DateTimeImmutable($service['activeTo']);
-                            $service['activeTo'] = $service['activeTo'] -> format('d-m-Y');
-                        }
-    
-                        $HTML .= "
+                    <td colspan = "3">';
+
+    foreach ($services as $service) :
+
+        // Formatting dates into DD-MM-YYYY
+        if ($service['activeFrom']) {
+            $service['activeFrom'] = new \DateTimeImmutable($service['activeFrom']);
+            $service['activeFrom'] = $service['activeFrom']->format('d-m-Y');
+        }
+
+        if ($service['activeTo']) {
+            $service['activeTo'] = new \DateTimeImmutable($service['activeTo']);
+            $service['activeTo'] = $service['activeTo']->format('d-m-Y');
+        }
+
+        $HTML .= "
                         <ul>
                             <li>
                                 <p>
@@ -340,16 +341,16 @@ if(isset($_POST['signOutput'])) {
                             </li>
                             <li>
                                 <p>
-                                    <strong>Viteze:&nbsp;</strong>" . $service['downloadSpeed'] . " Mbps (download) / " . $service['uploadSpeed'] ." Mbps (upload)
+                                    <strong>Viteze:&nbsp;</strong>" . $service['downloadSpeed'] . " Mbps (download) / " . $service['uploadSpeed'] . " Mbps (upload)
                             <li>
                                 <p>
-                                    <strong>Adresa:&nbsp;</strong>".$service['street1']." ".$service['street2']."
-                                    <strong>oras:&nbsp;</strong>" . $service['city'].", ".$service['zipCode']."
+                                    <strong>Adresa:&nbsp;</strong>" . $service['street1'] . " " . $service['street2'] . "
+                                    <strong>oras:&nbsp;</strong>" . $service['city'] . ", " . $service['zipCode'] . "
                                 </p>
                             </li>
                         </ul>";
-                    endforeach;
-    
+    endforeach;
+
     $HTML .= '
                     </td>
                 </tr>
@@ -368,21 +369,21 @@ if(isset($_POST['signOutput'])) {
                     </th>
                 </tr>
                 <tr>
-                    <td colspan = "2">';
-    
-                    foreach($services as $service):
+                    <td colspan = "3">';
 
-                        $serviceSurcharge = UCRMAPIAccess::doRequest(sprintf('clients/services/%d/service-surcharges', $service['id'])) ?: [];
-        
-                        $surchargeById = [];
-                        foreach($serviceSurcharge as $surcharge):
-                            $surchargeById[$surcharge['surchargeId']] = $surcharge['invoiceLabel'];
-                            $surchargePrice[$surcharge['surchargeId']] = $surcharge['price'];
-                        endforeach;
-    
-                        if($service['servicePlanId'] == 1) {
-    
-                            $HTML .= "
+    foreach ($services as $service) :
+
+        $serviceSurcharge = UCRMAPIAccess::doRequest(sprintf('clients/services/%d/service-surcharges', $service['id'])) ?: [];
+
+        $surchargeById = [];
+        foreach ($serviceSurcharge as $surcharge) :
+            $surchargeById[$surcharge['surchargeId']] = $surcharge['invoiceLabel'];
+            $surchargePrice[$surcharge['surchargeId']] = $surcharge['price'];
+        endforeach;
+
+        if ($service['servicePlanId'] == 1) {
+
+            $HTML .= "
                                 <center>
                                     <strong>Internet Extra - 50RON / luna</strong>
                                     <br>
@@ -398,11 +399,11 @@ if(isset($_POST['signOutput'])) {
                                     <br>
                                     <strong>" . $surchargeById[1] . " - " . $surchargePrice[1] . "RON / luna</strong>
                                     <br><br>";
-                        }
-    
-                        if($service['servicePlanId'] == 2) {
-    
-                            $HTML .= "
+        }
+
+        if ($service['servicePlanId'] == 2) {
+
+            $HTML .= "
                                 <center>
                                     <strong> Internet Standard - 25RON / luna </strong>
                                     <br>
@@ -416,11 +417,11 @@ if(isset($_POST['signOutput'])) {
                                     <br>
                                     <strong>" . $surchargeById[1] . " - " . $surchargePrice[1] . "RON / luna</strong>
                                     <br><br>";
-                        }
-    
-                        if($service['servicePlanId'] == 3) {
-    
-                            $HTML .= "
+        }
+
+        if ($service['servicePlanId'] == 3) {
+
+            $HTML .= "
                                 <center>
                                     <strong>Televiziune extra - 75RON / luna </strong>
                                     <br>
@@ -434,11 +435,11 @@ if(isset($_POST['signOutput'])) {
                                     <br>
                                     <strong>" . $surchargeById[2] . " - " . $surchargePrice[2] . "RON / luna</strong>
                                     <br><br>";
-                        }
-    
-                        if($service['servicePlanId'] == 4) {
-    
-                            $HTML .= "
+        }
+
+        if ($service['servicePlanId'] == 4) {
+
+            $HTML .= "
                                 <center>
                                     <strong> Pachet Internet Extra + TV 1 an - 75RON / luna </strong>
                                     <br>
@@ -456,10 +457,10 @@ if(isset($_POST['signOutput'])) {
                                     <br>
                                     Reducere pentru plata anticipata si integrala: 25% (9 luni + 3 gratuite).
                                     <br><br>";
-                        }
-                    endforeach;
-            
-                $HTML .= '
+        }
+    endforeach;
+
+    $HTML .= '
                             <center>
                                 Taxa suspendare - 125RON | Taxa reactivare - 125RON | Taxa conectare - 250RON
                             </center>
@@ -467,8 +468,8 @@ if(isset($_POST['signOutput'])) {
                     </tr>
                 </tbody>
             </table>';
-    
-            $HTML .= '
+
+    $HTML .= '
             <table class = "paragraph">
                 <tbody>
                 <tr>
@@ -481,7 +482,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
     
                     <tr>
-                        <td colspan = "2">
+                        <td colspan = "3">
                             <center>Perioada contractuala este de <strong>minim 24 de luni</strong></center>
                         </td>
                     </tr>
@@ -505,7 +506,7 @@ if(isset($_POST['signOutput'])) {
             <table>
                 <tbody>
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "3">
                         <p>
                             <strong>X ANEXA A&nbsp;</strong>- ABONAMENTE, PROMOTII si DISCOUNTURI
                         </p>
@@ -513,7 +514,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
     
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "3">
                         <p>
                             <strong>X ANEXA A.1&nbsp;</strong>- CONDITII GENERALE
                         </p>
@@ -521,7 +522,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
     
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "3">
                         <p>
                             <strong>X ANEXA B.1, B.2&nbsp;</strong>- CONDITII TEHNICE SI COMERCIALE SPECIFICE SERVICIILOR DE INTERNET / TELEVIZIUNE
                         </p>
@@ -529,7 +530,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
     
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "3">
                         <p>
                             <strong>X ANEXA C.1&nbsp;</strong>- PROCES VERBAL DE ACCEPTANTA SI PUNERE IN FUNCTIUNE
                         </p>
@@ -537,7 +538,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
     
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "3">
                         <p>
                             <strong>X ANEXA C.2&nbsp;</strong>- PROCES VERBAL DE PREDARE / PRIMIRE CUSTODIE ECHIPAMENTE
                         </p>
@@ -545,7 +546,7 @@ if(isset($_POST['signOutput'])) {
                 </tr>
     
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "3">
                         <p>
                             <strong>X ANEXA C.3&nbsp;</strong>- INFORMARE CU PRIVINTA LA PRELUCRAREA DATELOR DUMNEAVOASTRA CU CARACTER PERSONAL (DENUMITA IN CONTINUARE "INFORMAREA")
                         </p>
@@ -1662,18 +1663,18 @@ if(isset($_POST['signOutput'])) {
         </div>
     </body>';
 
-    $PDF -> loadHtml($HTML);
+    $PDF->loadHtml($HTML);
 
     // Set page and orientation.
-    $PDF -> setPaper('A3', 'portrait');
+    $PDF->setPaper('A4', 'portrait');
 
     // Render the HTML as PDF.
-    $PDF -> render();
+    $PDF->render();
 
     // Output the PDF file.
-    $PDFAtt = $PDF -> output();
-    
-    $filename = 'Contract 07INTERNET - '.$fullName.'.pdf';
+    $PDFAtt = $PDF->output();
+
+    $filename = 'Contract 07INTERNET - ' . $fullName . '.pdf';
     $encoding = 'base64';
     $type = 'application/pdf';
 
@@ -1749,8 +1750,8 @@ if(isset($_POST['signOutput'])) {
     ]}");
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-    "Content-Type: application/json",
-    "X-Auth-App-Key: HS9hdWcdsV34MXGy/VKKloywDwZeVORNGAfZlHQNQM2sAQM03bSPOodm/9eQ1qpH"
+        "Content-Type: application/json",
+        "X-Auth-App-Key: HS9hdWcdsV34MXGy/VKKloywDwZeVORNGAfZlHQNQM2sAQM03bSPOodm/9eQ1qpH"
     ));
 
     $response = curl_exec($ch);
@@ -1780,31 +1781,32 @@ if(isset($_POST['signOutput'])) {
     }");
 
     curl_setopt($emailQueue, CURLOPT_HTTPHEADER, array(
-    "Content-Type: application/json",
-    "X-Auth-App-Key: HS9hdWcdsV34MXGy/VKKloywDwZeVORNGAfZlHQNQM2sAQM03bSPOodm/9eQ1qpH"
+        "Content-Type: application/json",
+        "X-Auth-App-Key: HS9hdWcdsV34MXGy/VKKloywDwZeVORNGAfZlHQNQM2sAQM03bSPOodm/9eQ1qpH"
     ));
 
     $emailDump = curl_exec($emailQueue);
     curl_close($emailQueue);
-    
+
     echo '<p style = "font-weight: normal; text-align: center;">Un mail a fost trimis catre adresa dumneavoastra de mail. Asigurati-va ca ati verificat si folderul SPAM.</p>';
 }
 ?>
 
 <?php
 
-if($attributeValuesById[39] == 0) {
+if ($attributeValuesById[39] == 0) {
 ?>
-<!DOCTYPE HTML>
-<html lang = "EN">
+    <!DOCTYPE HTML>
+    <html lang="EN">
+
     <head>
-        <meta charset = "UTF-8" />
-        <meta name = "viewport" content = "width = device-width, initial-scale = 1, shrink-to-fit = yes" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width = device-width, initial-scale = 1, shrink-to-fit = yes" />
 
         <title>Semneaza contract</title>
-        
-        <script src="https://kit.fontawesome.com/d22129114a.js" crossorigin="anonymous"></script>
-        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+        <script src="https://kit.fontawesome.com/4de0fc742d.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 
         <style>
             <?php include __DIR__ . '/assets/style.css' ?>
@@ -1813,43 +1815,43 @@ if($attributeValuesById[39] == 0) {
 
     <body>
         <!-- <div class = "sigForm"> -->
-            <form method = "POST" class = "sigPad">
-                <label for = "name">Introdu numele mai jos:</label>
-                <input text = "text" name = "name" id = "name" class = "name">
-    
-                <ul class = "sigNav">
-                    <li class = "typeIt">
-                        <a href = "#type-it">
-                            <i class="fas fa-pen-alt"></i>
-                        </a>
-                    </li>
+        <form method="POST" class="sigPad">
+            <label for="name">Introdu numele mai jos:</label>
+            <input text="text" name="name" id="name" class="name">
 
-                    <li class = "drawIt">
-                        <a href = "#draw-it" class = "current">
-                            <i class="fas fa-paint-brush"></i>
-                        </a>
-                    </li>
+            <ul class="sigNav">
+                <li class="typeIt">
+                    <a href="#type-it">
+                        <i class="fas fa-pen-alt"></i>
+                    </a>
+                </li>
 
-                    <li class = "clearButton">
-                        <a href = "#clear">
-                            <i class="fas fa-eraser"></i>
-                        </a>
-                    </li>
-                </ul>
-    
-                <div class = "sig sigWrapper">
-                    <div class = "typed"></div>
-                    <canvas class = "pad" width = "250" height = "100"></canvas>
-    
-                    <input type = "hidden" name = "signOutput" class = "signOutput" />
-                </div>
-    
-                <button type = "submit">
-                    Sunt de acord cu termenii si conditiile!
-                </button>
-            </form>
+                <li class="drawIt">
+                    <a href="#draw-it" class="current">
+                        <i class="fas fa-paint-brush"></i>
+                    </a>
+                </li>
 
-            <!--          
+                <li class="clearButton">
+                    <a href="#clear">
+                        <i class="fas fa-eraser"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sig sigWrapper">
+                <div class="typed"></div>
+                <canvas class="pad" width="250" height="100"></canvas>
+
+                <input type="hidden" name="signOutput" class="signOutput" />
+            </div>
+
+            <button type="submit">
+                Sunt de acord cu termenii si conditiile!
+            </button>
+        </form>
+
+        <!--          
             <div class = "rightForm">
                 <div class = "contractInfo">
                     <p style = "text-align: center;">
@@ -1880,7 +1882,9 @@ if($attributeValuesById[39] == 0) {
             });
 
             $('.sigPad').submit(function(evt) {
-                $('.signOutput').val(sig.getSignatureImage({drawBackground: false}));
+                $('.signOutput').val(sig.getSignatureImage({
+                    drawBackground: false
+                }));
             });
         </script>
 
@@ -1888,9 +1892,10 @@ if($attributeValuesById[39] == 0) {
             <?php include __DIR__ . '/assets/json2.min.js' ?>
         </script>
     </body>
-</html>
+
+    </html>
 
 <?php
 } else {
-    echo '<p style = "font-weight: bold; text-align: center;"> Ai semnat deja contractul!</p>'. PHP_EOL;
+    echo '<p style = "font-weight: bold; text-align: center;"> Ai semnat deja contractul!</p>' . PHP_EOL;
 }
