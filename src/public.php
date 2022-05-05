@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 // references to Ubnt, ...
 use Ubnt\UcrmPluginSdk\Service\UcrmSecurity;
@@ -14,10 +14,10 @@ require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/main.php';
 
 $security = UcrmSecurity::create();
-$user = $security -> getUser();
+$user = $security->getUser();
 
 // Check if user is client, if not send an error message.
-if(!$user -> isClient) {
+if (!$user->isClient) {
     App\Http::forbidden();
 }
 
@@ -26,12 +26,12 @@ $optionsManager = UcrmOptionsManager::create();
 $renderer = new TemplateRenderer();
 
 // Set the default template and data.
-$template = "overview.php";
-$data = [   'ucrmPublicUrl' => $optionsManager -> loadOptions() -> ucrmPublicUrl    ];
+$template = "read.php";
+$data = ['ucrmPublicUrl' => $optionsManager->loadOptions()->ucrmPublicUrl];
 
-if(isset($_GET["hook"])) {
+if (isset($_GET["hook"])) {
     // Handle the possible "hook" parameters...
-    switch($_GET["hook"]) {
+    switch ($_GET["hook"]) {
         case "read":
             $template = "read.php";
             break;
@@ -46,4 +46,4 @@ if(isset($_GET["hook"])) {
     }
 }
 
-$renderer -> render(__DIR__ . "/views/$template", $data);
+$renderer->render(__DIR__ . "/views/$template", $data);
