@@ -11,38 +11,38 @@ use Dompdf\Options;
 
 // Ensure that user is logged in and has permission to sign the contract.
 $security = UcrmSecurity::create();
-$user = $security -> getUser();
+$user = $security->getUser();
 
-if(!$user -> isClient) {
+if (!$user->isClient) {
     \App\Http::forbidden();
 }
 
 // API doRequest - Client, Client's Contacts and Services
-$clientId = $user -> clientId;
+$clientId = $user->clientId;
 $client = UCRMAPIAccess::doRequest(sprintf('clients/%d', $clientId)) ?: [];
 $fullName = $client['lastName'] . ' ' . $client['firstName'];
 
 $contacts = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
 
 $services = UCRMAPIAccess::doRequest(sprintf('clients/services?clientId=%d', $clientId)) ?: [];
-foreach($services as $service):
+foreach ($services as $service) :
     $service = UCRMAPIAccess::doRequest(sprintf('clients/services/%d', $service['id'])) ?: [];
 endforeach;
 
 // Parse the attributes to an ID <=> value pairs:
 $attributeValuesById = [];
-foreach($client['attributes'] as $attribute):
+foreach ($client['attributes'] as $attribute) :
     $attributeValuesById[$attribute['customAttributeId']] = $attribute['value'];
 endforeach;
 
 // Initialize Dompdf class
 $PDF = new Dompdf();
-$PDFOptions = $PDF -> getOptions();
-$PDFOptions -> set([
+$PDFOptions = $PDF->getOptions();
+$PDFOptions->set([
     'isRemoteEnabled' => true,
     'isHtml5ParserEnabled' => true
 ]);
-$PDF -> setOptions($PDFOptions);
+$PDF->setOptions($PDFOptions);
 
 // Header
 header('Content-Type: application/pdf');
@@ -137,6 +137,7 @@ $HTML = '
             background: #7D7B7B;
             text-align: left;
             padding: 0 8px;
+            width: 100%;
         }
         
         .paragraph th:first-child {
@@ -179,7 +180,7 @@ $HTML = '
             </tr>
 
             <tr>
-                <td colspan = "2">
+                <td colspan = "3">
                     <p style = "text-align: center;">
                         URBAN NETWORK SOLUTIONS S.R.L, cu sediul in <strong>Navodari, str. Midiei nr. 6, jud. Constanta</strong>, J13/1022/2017,
                         <strong>CUI:</strong> 37374276, Unicredit Navodari, <strong>CONT:</strong> RO70 BACX 0000 0014 5390 8001, reprezentata de
@@ -202,26 +203,26 @@ $HTML = '
             </tr>
 
             <tr>
-                <td colspan = "2">
+                <td colspan = "3">
                     <p>
                         <strong>Nume:&nbsp;</strong>' . $fullName . ', <br>
                         <strong>domiciliat / cu sediul in:&nbsp;</strong>' . $client['fullAddress'] . '<br>';
 
-                    foreach($contacts as $contact):
+foreach ($contacts as $contact) :
 
-                        $HTML .= "
+    $HTML .= "
                         <strong>email:&nbsp;</strong>" . $contact['email'] . "<br>
-                        <strong>persoana de contact:&nbsp;</strong>" .$contact['name'] . "<br>
+                        <strong>persoana de contact:&nbsp;</strong>" . $contact['name'] . "<br>
                         <strong>numar de telefon:&nbsp;</strong>" . $contact['phone'] . "<br>";
-                    endforeach;
+endforeach;
 
-                    $HTML .= '
+$HTML .= '
                     </p>
                 </td>
             </tr>
 
             <tr>
-                <td colspan = "2">
+                <td colspan = "3">
                     <p>
                         <strong>
                             <u>
@@ -305,22 +306,22 @@ $HTML = '
             </tr>
 
             <tr>
-                <td colspan = "2">';
+                <td colspan = "3">';
 
-                foreach($services as $service):
+foreach ($services as $service) :
 
-                    // Formatting dates into DD-MM-YYYY
-                    if($service['activeFrom']) {
-                        $service['activeFrom'] = new \DateTimeImmutable($service['activeFrom']);
-                        $service['activeFrom'] = $service['activeFrom'] -> format('d-m-Y');
-                    }
+    // Formatting dates into DD-MM-YYYY
+    if ($service['activeFrom']) {
+        $service['activeFrom'] = new \DateTimeImmutable($service['activeFrom']);
+        $service['activeFrom'] = $service['activeFrom']->format('d-m-Y');
+    }
 
-                    if($service['activeTo']) {
-                        $service['activeTo'] = new \DateTimeImmutable($service['activeTo']);
-                        $service['activeTo'] = $service['activeTo'] -> format('d-m-Y');
-                    }
+    if ($service['activeTo']) {
+        $service['activeTo'] = new \DateTimeImmutable($service['activeTo']);
+        $service['activeTo'] = $service['activeTo']->format('d-m-Y');
+    }
 
-                    $HTML .= "
+    $HTML .= "
                     <ul>
                         <li>
                             <p>
@@ -339,15 +340,15 @@ $HTML = '
                         </li>
                         <li>
                             <p>
-                                <strong>Viteze:&nbsp;</strong>" . $service['downloadSpeed'] . " Mbps (download) / " . $service['uploadSpeed'] ." Mbps (upload)
+                                <strong>Viteze:&nbsp;</strong>" . $service['downloadSpeed'] . " Mbps (download) / " . $service['uploadSpeed'] . " Mbps (upload)
                         <li>
                             <p>
-                                <strong>Adresa:&nbsp;</strong>".$service['street1']." ".$service['street2']."
-                                <strong>oras:&nbsp;</strong>" . $service['city'].", ".$service['zipCode']."
+                                <strong>Adresa:&nbsp;</strong>" . $service['street1'] . " " . $service['street2'] . "
+                                <strong>oras:&nbsp;</strong>" . $service['city'] . ", " . $service['zipCode'] . "
                             </p>
                         </li>
                     </ul>";
-                endforeach;
+endforeach;
 
 $HTML .= '
                 </td>
@@ -367,21 +368,21 @@ $HTML .= '
                 </th>
             </tr>
             <tr>
-                <td colspan = "2">';
+                <td colspan = "3">';
 
-                foreach($services as $service):
+foreach ($services as $service) :
 
-                    $serviceSurcharge = UCRMAPIAccess::doRequest(sprintf('clients/services/%d/service-surcharges', $service['id'])) ?: [];
-    
-                    $surchargeById = [];
-                    foreach($serviceSurcharge as $surcharge):
-                        $surchargeById[$surcharge['surchargeId']] = $surcharge['invoiceLabel'];
-                        $surchargePrice[$surcharge['surchargeId']] = $surcharge['price'];
-                    endforeach;
+    $serviceSurcharge = UCRMAPIAccess::doRequest(sprintf('clients/services/%d/service-surcharges', $service['id'])) ?: [];
 
-                    if($service['servicePlanId'] == 1) {
-    
-                        $HTML .= "
+    $surchargeById = [];
+    foreach ($serviceSurcharge as $surcharge) :
+        $surchargeById[$surcharge['surchargeId']] = $surcharge['invoiceLabel'];
+        $surchargePrice[$surcharge['surchargeId']] = $surcharge['price'];
+    endforeach;
+
+    if ($service['servicePlanId'] == 1) {
+
+        $HTML .= "
                             <center>
                                 <strong>Internet Extra - 50RON / luna</strong>
                                 <br>
@@ -397,11 +398,11 @@ $HTML .= '
                                 <br>
                                 <strong>" . $surchargeById[1] . " - " . $surchargePrice[1] . "RON / luna</strong>
                                 <br><br>";
-                    }
+    }
 
-                    if($service['servicePlanId'] == 2) {
+    if ($service['servicePlanId'] == 2) {
 
-                        $HTML .= "
+        $HTML .= "
                             <center>
                                 <strong> Internet Standard - 25RON / luna </strong>
                                 <br>
@@ -415,11 +416,11 @@ $HTML .= '
                                 <br>
                                 <strong>" . $surchargeById[1] . " - " . $surchargePrice[1] . "RON / luna</strong>
                                 <br><br>";
-                    }
+    }
 
-                    if($service['servicePlanId'] == 3) {
+    if ($service['servicePlanId'] == 3) {
 
-                        $HTML .= "
+        $HTML .= "
                             <center>
                                 <strong>Televiziune extra - 75RON / luna </strong>
                                 <br>
@@ -433,11 +434,11 @@ $HTML .= '
                                 <br>
                                 <strong>" . $surchargeById[2] . " - " . $surchargePrice[2] . "RON / luna</strong>
                                 <br><br>";
-                    }
+    }
 
-                    if($service['servicePlanId'] == 4) {
+    if ($service['servicePlanId'] == 4) {
 
-                        $HTML .= "
+        $HTML .= "
                             <center>
                                 <strong> Pachet Internet Extra + TV 1 an - 75RON / luna </strong>
                                 <br>
@@ -455,10 +456,10 @@ $HTML .= '
                                 <br>
                                 Reducere pentru plata anticipata si integrala: 25% (9 luni + 3 gratuite).
                                 <br><br>";
-                    }
-                endforeach;
-        
-            $HTML .= '
+    }
+endforeach;
+
+$HTML .= '
                         <center>
                             Taxa suspendare - 125RON | Taxa reactivare - 125RON | Taxa conectare - 250RON
                         </center>
@@ -467,7 +468,7 @@ $HTML .= '
             </tbody>
         </table>';
 
-        $HTML .= '
+$HTML .= '
         <table class = "paragraph">
             <tbody>
             <tr>
@@ -480,7 +481,7 @@ $HTML .= '
             </tr>
 
                 <tr>
-                    <td colspan = "2">
+                    <td colspan = "3">
                         <center>Perioada contractuala este de <strong>minim 24 de luni</strong></center>
                     </td>
                 </tr>
@@ -504,7 +505,7 @@ $HTML .= '
         <table>
             <tbody>
             <tr>
-                <td colspan = "2">
+                <td colspan = "3">
                     <p>
                         <strong>X ANEXA A&nbsp;</strong>- ABONAMENTE, PROMOTII si DISCOUNTURI
                     </p>
@@ -512,7 +513,7 @@ $HTML .= '
             </tr>
 
             <tr>
-                <td colspan = "2">
+                <td colspan = "3">
                     <p>
                         <strong>X ANEXA A.1&nbsp;</strong>- CONDITII GENERALE
                     </p>
@@ -520,7 +521,7 @@ $HTML .= '
             </tr>
 
             <tr>
-                <td colspan = "2">
+                <td colspan = "3">
                     <p>
                         <strong>X ANEXA B.1, B.2&nbsp;</strong>- CONDITII TEHNICE SI COMERCIALE SPECIFICE SERVICIILOR DE INTERNET / TELEVIZIUNE
                     </p>
@@ -528,7 +529,7 @@ $HTML .= '
             </tr>
 
             <tr>
-                <td colspan = "2">
+                <td colspan = "3">
                     <p>
                         <strong>X ANEXA C.1&nbsp;</strong>- PROCES VERBAL DE ACCEPTANTA SI PUNERE IN FUNCTIUNE
                     </p>
@@ -536,7 +537,7 @@ $HTML .= '
             </tr>
 
             <tr>
-                <td colspan = "2">
+                <td colspan = "3">
                     <p>
                         <strong>X ANEXA C.2&nbsp;</strong>- PROCES VERBAL DE PREDARE / PRIMIRE CUSTODIE ECHIPAMENTE
                     </p>
@@ -544,7 +545,7 @@ $HTML .= '
             </tr>
 
             <tr>
-                <td colspan = "2">
+                <td colspan = "3">
                     <p>
                         <strong>X ANEXA C.3&nbsp;</strong>- INFORMARE CU PRIVINTA LA PRELUCRAREA DATELOR DUMNEAVOASTRA CU CARACTER PERSONAL (DENUMITA IN CONTINUARE "INFORMAREA")
                     </p>
@@ -1662,23 +1663,23 @@ $HTML .= '
 
 // Mobile Detect
 $detect = new Mobile_Detect;
-$PDF -> loadHtml($HTML);
+$PDF->loadHtml($HTML);
 
 // Set the page size and orientation.
-$PDF -> setPaper('A3', 'portrait');
+$PDF->setPaper('A4', 'portrait');
 
 // Render the HTML as PDF.
-$PDF -> render();
+$PDF->render();
 
 
 // Output the generated PDF to phone and browser (1 = Download, 0 = Preview).
 // If phone is detected, the file must be downloaded.
-if($detect -> isMobile() || $detect -> isTablet()) {
-    $PDF -> stream("Contract 07INTERNET - '$fullName' . pdf", [
+if ($detect->isMobile() || $detect->isTablet()) {
+    $PDF->stream("Contract 07INTERNET - '$fullName' . pdf", [
         "Attachment" => true
     ]);
 } else {
-    $PDF -> stream("Contract 07INTERNET - '$fullName' . pdf", [
+    $PDF->stream("Contract 07INTERNET - '$fullName' . pdf", [
         "Attachment" => false
     ]);
 }
