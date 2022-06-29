@@ -2,10 +2,11 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-class UCRMAPIAccess {
-    const API_URL = 'https://uisp.07internet.ro/api/v1.0';
-    const API_KEY = 'HS9hdWcdsV34MXGy/VKKloywDwZeVORNGAfZlHQNQM2sAQM03bSPOodm/9eQ1qpH';
+$DOTENV = Dotenv\Dotenv::createImmutable(__DIR__);
+$DOTENV->safeLoad();
 
+class UCRMAPIAccess
+{
     /**
      * @param string $url
      * @param string $method
@@ -15,7 +16,8 @@ class UCRMAPIAccess {
      */
 
 
-    public static function doRequest($url, $method = 'GET', $post = []) {
+    public static function doRequest($url, $method = 'GET', $post = [])
+    {
         $method = strtoupper($method);
 
         $ch = curl_init();
@@ -23,7 +25,7 @@ class UCRMAPIAccess {
         curl_setopt(
             $ch,
             CURLOPT_URL,
-            sprintf('%s/%s', self::API_URL, $url)
+            sprintf('%s/%s', $_ENV["UCRM_URL"], $url)
         );
 
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
@@ -35,21 +37,21 @@ class UCRMAPIAccess {
             CURLOPT_HTTPHEADER,
             [
                 'Content-Type: application/json',
-                sprintf('X-Auth-App-Key: %s', self::API_KEY),
+                sprintf('X-Auth-App-Key: %s', $_ENV["UCRM_KEY"]),
             ]
         );
 
-        if($method !== 'GET') {
+        if ($method !== 'GET') {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         }
 
         $response = curl_exec($ch);
 
-        if(curl_errno($ch) !== 0) {
+        if (curl_errno($ch) !== 0) {
             echo sprintf('Eroare cURL: %s', curl_error($ch)) . PHP_EOL;
         }
 
-        if(curl_getinfo($ch, CURLINFO_HTTP_CODE) >= 400) {
+        if (curl_getinfo($ch, CURLINFO_HTTP_CODE) >= 400) {
             echo sprintf('Eroare API: %s', $response) . PHP_EOL;
             $response = false;
         }
@@ -105,7 +107,7 @@ function curlQuery(string $url, array $headers = [], array $parameters = []): ar
 
     curl_close($c);
 
-    if (! $result) {
+    if (!$result) {
         throw new \Exception(sprintf('Error for request %s. Empty result.', $url));
     }
 
