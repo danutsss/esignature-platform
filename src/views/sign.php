@@ -1714,8 +1714,10 @@ if (isset($_POST['signOutput'])) {
     // Update custom attribute for contract signed date.
     $dateSigned = curl_init();
 
-    // Get current date.
-    $date = date('Y-m-d');
+    // Get current date + 1 year.
+    $date = new DateTime();
+    $date->add(new DateInterval('P1Y'));
+    $date = $date->format('Y-m-d');
 
     curl_setopt($dateSigned, CURLOPT_URL, 'https://uisp.07internet.ro/crm/api/v1.0/clients/' . $clientId);
     curl_setopt($dateSigned, CURLOPT_RETURNTRANSFER, TRUE);
