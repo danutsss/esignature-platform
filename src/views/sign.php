@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 // references to Ubnt, Dompdf, ...
 use Ubnt\UcrmPluginSdk\Service\UcrmSecurity;
-
+use App\Utility\UcrmApi;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -13,6 +13,7 @@ use Dompdf\Options;
 // Ensure that user is logged in and has permission to sign the contract.
 $security = UcrmSecurity::create();
 $user = $security->getUser();
+$ucrmApi = new UcrmApi();
 
 if (!$user->isClient) {
     \App\Http::forbidden();
@@ -23,14 +24,14 @@ $clientId = $user->clientId;
 
 // API doRequest - Client, Client's Contacts and Services
 $clientId = $user->clientId;
-$client = UCRMAPIAccess::doRequest(sprintf('clients/%d', $clientId)) ?: [];
+$client = $ucrmApi->doRequest(sprintf('clients/%d', $clientId)) ?: [];
 $fullName = $client['lastName'] . ' ' . $client['firstName'];
 
-$contacts = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
+$contacts = $ucrmApi->doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
 
-$services = UCRMAPIAccess::doRequest(sprintf('clients/services?clientId=%d', $clientId)) ?: [];
+$services = $ucrmApi->doRequest(sprintf('clients/services?clientId=%d', $clientId)) ?: [];
 foreach ($services as $service) :
-    $service = UCRMAPIAccess::doRequest(sprintf('clients/services/%d', $service['id'])) ?: [];
+    $service = $ucrmApi->doRequest(sprintf('clients/services/%d', $service['id'])) ?: [];
 endforeach;
 
 // Parse the attributes to an ID <=> value pairs:
@@ -373,7 +374,7 @@ if (isset($_POST['signOutput'])) {
 
     foreach ($services as $service) :
 
-        $serviceSurcharge = UCRMAPIAccess::doRequest(sprintf('clients/services/%d/service-surcharges', $service['id'])) ?: [];
+        $serviceSurcharge = $ucrmApi->doRequest(sprintf('clients/services/%d/service-surcharges', $service['id'])) ?: [];
 
         $surchargeById = [];
         foreach ($serviceSurcharge as $surcharge) :
@@ -1685,15 +1686,15 @@ if (isset($_POST['signOutput'])) {
     $contactEmail = $contact['email'];
 
     // Update Custom Attribute for signed contracts
-    $customAttr = curl_init();
+    $contractSigned = curl_init();
 
-    curl_setopt($customAttr, CURLOPT_URL, 'https://uisp.07internet.ro/crm/api/v1.0/clients/' . $clientId);
-    curl_setopt($customAttr, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($customAttr, CURLOPT_HEADER, FALSE);
+    curl_setopt($contractSigned, CURLOPT_URL, 'https://uisp.07internet.ro/crm/api/v1.0/clients/' . $clientId);
+    curl_setopt($contractSigned, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($contractSigned, CURLOPT_HEADER, FALSE);
 
-    curl_setopt($customAttr, CURLOPT_CUSTOMREQUEST, 'PATCH');
+    curl_setopt($contractSigned, CURLOPT_CUSTOMREQUEST, 'PATCH');
 
-    curl_setopt($customAttr, CURLOPT_POSTFIELDS, "{
+    curl_setopt($contractSigned, CURLOPT_POSTFIELDS, "{
         \"attributes\": [
             {
                 \"value\": \"1\",
@@ -1702,13 +1703,43 @@ if (isset($_POST['signOutput'])) {
         ]
     }");
 
-    curl_setopt($customAttr, CURLOPT_HTTPHEADER, array(
+    curl_setopt($contractSigned, CURLOPT_HTTPHEADER, array(
         'Content-Type: application/json',
         'X-Auth-App-Key: HS9hdWcdsV34MXGy/VKKloywDwZeVORNGAfZlHQNQM2sAQM03bSPOodm/9eQ1qpH'
     ));
 
-    $dump = curl_exec($customAttr);
-    curl_close($customAttr);
+    $dump = curl_exec($contractSigned);
+    curl_close($contractSigned);
+
+    // Update custom attribute for contract signed date.
+    $dateSigned = curl_init();
+
+    // Get current date.
+    $date = date('Y-m-d');
+
+    curl_setopt($dateSigned, CURLOPT_URL, 'https://uisp.07internet.ro/crm/api/v1.0/clients/' . $clientId);
+    curl_setopt($dateSigned, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($dateSigned, CURLOPT_HEADER, FALSE);
+
+    curl_setopt($dateSigned, CURLOPT_CUSTOMREQUEST, 'PATCH');
+
+    curl_setopt($dateSigned, CURLOPT_POSTFIELDS, "{
+            \"attributes\": [
+                {
+                    \"value\": \"$date\",
+                    \"customAttributeId\": 50
+                }
+            ]
+        }");
+
+    curl_setopt($dateSigned, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'X-Auth-App-Key: HS9hdWcdsV34MXGy/VKKloywDwZeVORNGAfZlHQNQM2sAQM03bSPOodm/9eQ1qpH'
+    ));
+
+    $dump = curl_exec($dateSigned);
+    curl_close($dateSigned);
+
 
     // Create ticket with the signed PDF file
     $ch = curl_init();

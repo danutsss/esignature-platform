@@ -5,13 +5,14 @@ error_reporting(E_ALL);
 
 //references to Ubnt, Dompdf, ...
 use Ubnt\UcrmPluginSdk\Service\UcrmSecurity;
+use App\Utility\UcrmApi;
 
 use Dompdf\Dompdf;
-use Dompdf\Options;
 
 // Ensure that user is logged in and has permission to sign the contract.
 $security = UcrmSecurity::create();
 $user = $security->getUser();
+$ucrmApi = new UcrmApi();
 
 if (!$user->isClient) {
     \App\Http::forbidden();
@@ -19,14 +20,14 @@ if (!$user->isClient) {
 
 // API doRequest - Client, Client's Contacts and Services
 $clientId = $user->clientId;
-$client = UCRMAPIAccess::doRequest(sprintf('clients/%d', $clientId)) ?: [];
+$client = $ucrmApi->doRequest(sprintf('clients/%d', $clientId)) ?: [];
 $fullName = $client['lastName'] . ' ' . $client['firstName'];
 
-$contacts = UCRMAPIAccess::doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
+$contacts = $ucrmApi->doRequest(sprintf('clients/%d/contacts', $clientId)) ?: [];
 
-$services = UCRMAPIAccess::doRequest(sprintf('clients/services?clientId=%d', $clientId)) ?: [];
+$services = $ucrmApi->doRequest(sprintf('clients/services?clientId=%d', $clientId)) ?: [];
 foreach ($services as $service) :
-    $service = UCRMAPIAccess::doRequest(sprintf('clients/services/%d', $service['id'])) ?: [];
+    $service = $ucrmApi->doRequest(sprintf('clients/services/%d', $service['id'])) ?: [];
 endforeach;
 
 // Parse the attributes to an ID <=> value pairs:
@@ -372,7 +373,7 @@ $HTML .= '
 
 foreach ($services as $service) :
 
-    $serviceSurcharge = UCRMAPIAccess::doRequest(sprintf('clients/services/%d/service-surcharges', $service['id'])) ?: [];
+    $serviceSurcharge = $ucrmApi->doRequest(sprintf('clients/services/%d/service-surcharges', $service['id'])) ?: [];
 
     $surchargeById = [];
     foreach ($serviceSurcharge as $surcharge) :
